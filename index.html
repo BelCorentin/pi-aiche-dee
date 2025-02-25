@@ -1,62 +1,147 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MNE Report</title>
+    <title>My PhD Journey</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
             line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
         }
-        h1, h2, h3 {
+
+        h1,
+        h2,
+        h3 {
             color: #2c3e50;
         }
+
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: auto;
-            padding: 20px;
-            border: 1px solid #ddd;
+            padding: 30px;
             border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .meeting-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border-left: 4px solid #3498db;
             background-color: #f9f9f9;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .meeting-date {
+            font-weight: bold;
+            color: #3498db;
+            margin-bottom: 10px;
+        }
+
+        .file-link {
+            display: inline-block;
+            margin: 5px 10px 5px 0;
+            padding: 8px 15px;
+            background-color: #e7f4ff;
+            border-radius: 4px;
+            color: #2980b9;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .file-link:hover {
+            background-color: #d0e8ff;
+            transform: translateY(-2px);
+        }
+
+        .intro {
+            margin-bottom: 30px;
+            text-align: justify;
+        }
+
+        header {
+            margin-bottom: 30px;
+            text-align: center;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
-        <h1>MNE Report</h1>
-        <p><strong>Patient ID:</strong> 12345</p>
-        <p><strong>Date:</strong> 2025-02-07</p>
-        <p><strong>Technician:</strong> Dr. Jane Doe</p>
+        <header>
+            <h1>PhD Progress</h1>
+            <p>Tracking progress through weekly meetings and research artifacts</p>
+        </header>
 
-        <h2>Summary:</h2>
-        <p>The patient underwent a Magnetoencephalography (MNE) study to assess brain activity. The following findings were observed:</p>
+        <section class="intro">
+            <h2>About My Research</h2>
+            <p>Welcome to my PhD research homepage. This site documents my research journey, including weekly meetings
+                with my supervisors, research progress, and important documents. Each meeting section contains notes and
+                relevant files that showcase the evolution of my work.</p>
+            <!-- Add more details about your research focus, goals, etc. -->
+        </section>
 
-        <h3>1. Resting State Analysis:</h3>
-        <ul>
-            <li>Alpha rhythm predominates in the occipital region.</li>
-            <li>Beta activity observed in the frontal lobes.</li>
-        </ul>
+        <h2>Weekly Meetings</h2>
 
-        <h3>2. Event-Related Potentials (ERPs):</h3>
-        <ul>
-            <li>P300 component detected at 300 ms post-stimulus.</li>
-            <li>N200 component observed in response to target stimuli.</li>
-        </ul>
+        <div class="meeting-section">
+            <div class="meeting-date">Thursday, February 27, 2025</div>
+            <h3>Initial Research Planning</h3>
+            <p>During this first meeting, we discussed the scope of my research and established preliminary goals. Key
+                points included literature review strategy and initial research questions.</p>
+            <div class="meeting-files">
+                <h4>Files:</h4>
+                <a href="files/week1/research_proposal.pdf" class="file-link">Research Proposal</a>
+                <a href="files/week1/literature_review_plan.pdf" class="file-link">Literature Review Plan</a>
+            </div>
+        </div>
 
-        <h3>3. Source Localization:</h3>
-        <p>Increased activity in the left temporal lobe during auditory processing tasks.</p>
+        <div class="meeting-section">
+            <div class="meeting-date">Thursday, March 6, 2025</div>
+            <h3>Methodology Discussion</h3>
+            <p>We refined the research methodology and discussed potential data collection approaches. Feedback was
+                provided on the initial literature findings.</p>
+            <div class="meeting-files">
+                <h4>Files:</h4>
+                <a href="files/week2/methodology_draft.pdf" class="file-link">Methodology Draft</a>
+                <a href="files/week2/lit_review_progress.pdf" class="file-link">Literature Review Progress</a>
+            </div>
+        </div>
 
-        <h2>Recommendations:</h2>
-        <ul>
-            <li>Further evaluation with EEG may be beneficial.</li>
-            <li>Consider follow-up imaging studies to assess structural abnormalities.</li>
-        </ul>
+        <div class="meeting-section">
+            <div class="meeting-date">Thursday, March 13, 2025</div>
+            <h3>Data Collection Planning</h3>
+            <p>This meeting focused on finalizing the data collection instruments and establishing a timeline for the
+                first phase of research.</p>
+            <div class="meeting-files">
+                <h4>Files:</h4>
+                <a href="files/week3/data_collection_plan.pdf" class="file-link">Data Collection Plan</a>
+                <a href="files/week3/research_timeline.pdf" class="file-link">Research Timeline</a>
+            </div>
+        </div>
 
-        <h2>Conclusion:</h2>
-        <p>Overall, the MNE study indicates normal brain activity with specific regional increases associated with cognitive tasks. Further investigation is recommended.</p>
+        <!-- Template for future meetings (commented out) -->
+        <!--
+        <div class="meeting-section">
+            <div class="meeting-date">Thursday, [Date]</div>
+            <h3>[Meeting Title]</h3>
+            <p>[Meeting summary and key points discussed]</p>
+            <div class="meeting-files">
+                <h4>Files:</h4>
+                <a href="files/week#/filename.pdf" class="file-link">[File Description]</a>
+                <a href="files/week#/filename.pdf" class="file-link">[File Description]</a>
+            </div>
+        </div>
+        -->
+
+        <footer>
+            <p>Last updated: February 2025 | Contact: your.email@university.edu</p>
+        </footer>
     </div>
 </body>
+
 </html>
