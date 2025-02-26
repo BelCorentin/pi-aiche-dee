@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mindsentences Experiment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            padding: 30px;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-link {
+            display: inline-block;
+            margin: 0 10px 20px 0;
+            padding: 8px 15px;
+            background-color: #e7f4ff;
+            border-radius: 4px;
+            color: #2980b9;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background-color: #d0e8ff;
+            transform: translateY(-2px);
+        }
+
+        header {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .intro {
+            margin-bottom: 30px;
+            text-align: justify;
+        }
+
+        .audio-section {
+            margin: 30px 0;
+        }
+
+        .audio-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .audio-item {
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+
+        .audio-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .audio-player {
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #f1f1f1;
+            border: 1px solid #ddd;
+            border-bottom: none;
+            margin-right: 5px;
+            border-radius: 5px 5px 0 0;
+        }
+
+        .tab.active {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .methodology {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .results-summary {
+            padding: 20px;
+            background-color: #f0f7fb;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #3498db;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Mindsentences Experiment</h1>
+            <p>Neural signatures of auditory language processing</p>
+        </header>
+
+        <nav>
+            <a href="../index.html" class="nav-link">Home</a>
+            <a href="../experiments.html" class="nav-link">All Experiments</a>
+        </nav>
+
+        <section class="intro">
+            <h2>Experiment Overview</h2>
+            <p>The Mindsentences experiment investigates neural responses to auditory sentence processing using MEG/EEG. 
+               Participants listen to spoken sentences while their brain activity is recorded, allowing us to study 
+               the temporal dynamics of language comprehension, including syntactic and semantic processing.</p>
+        </section>
+
+        <section class="methodology">
+            <h2>Methodology</h2>
+            <p>In this experiment, participants were seated in a magnetically shielded room while wearing an 
+               MEG helmet and EEG cap. They listened to spoken sentences through ear tubes while fixating on a central cross. 
+               Neural activity was recorded using a 306-channel MEG system (Elekta Neuromag) and 64-channel EEG system.</p>
+            
+            <h3>Stimuli Details</h3>
+            <p>The stimuli consist of 160 sentences spoken by a native speaker. Sentences were controlled for:</p>
+            <ul>
+                <li>Length (8-12 words)</li>
+                <li>Syntactic complexity</li>
+                <li>Semantic predictability</li>
+                <li>Naturalness and comprehensibility</li>
+            </ul>
+            
+            <h3>Task</h3>
+            <p>Participants were instructed to listen attentively to each sentence. On 20% of trials, they were asked 
+               to answer a yes/no comprehension question to ensure attention was maintained throughout the experiment.</p>
+        </section>
+
+        <div class="tabs">
+            <div class="tab active" onclick="openTab(event, 'standard')">Standard Stimuli</div>
+            <div class="tab" onclick="openTab(event, 'no_punct')">No Punctuation Stimuli</div>
+        </div>
+
+        <section id="standard" class="tab-content audio-section active">
+            <h2>Audio Samples - Standard Stimuli</h2>
+            <p>Below are sample audio recordings used in the experiment. These represent the standard stimuli with normal prosody and punctuation.</p>
+            
+            <div class="audio-container">
+                <div class="audio-item">
+                    <div class="audio-title">Sample 1</div>
+                    <audio controls class="audio-player">
+                        <source src="../misc/audio/mindsentences/wav/audio_0.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+                
+                <div class="audio-item">
+                    <div class="audio-title">Sample 2</div>
+                    <audio controls class="audio-player">
+                        <source src="../misc/audio/mindsentences/wav/audio_1.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+                
+                <div class="audio-item">
+                    <div class="audio-title">Sample 3</div>
+                    <audio controls class="audio-player">
+                        <source src="../misc/audio/mindsentences/wav/audio_2.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+                
+                <div class="audio-item">
+                    <div class="audio-title">Sample 4</div>
+                    <audio controls class="audio-player">
+                        <source src="../misc/audio/mindsentences/wav/audio_3.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+                
+                <div class="audio-item">
+                    <div class="audio-title">Sample 5</div>
+                    <audio controls class="audio-player">
+                        <source src="../misc/audio/mindsentences/wav/audio_4.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+            </div>
+        </section>
+
+        <section id="no_punct" class="tab-content audio-section">
+            <h2>Audio Samples - No Punctuation Stimuli</h2>
+            <p>These audio samples represent the experimental condition where sentences were spoken without normal prosodic cues for punctuation.</p>
+            
+            <div class="audio-container">
+                <div class="audio-item">
+                    <div class="audio-title">Sample 1 (No Punctuation)</div>
+                    <audio controls class="audio-player">
+                        <source src="../misc/audio/mindsentences/wav_no_punct/audio_0.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+                
+                <div class="audio-item">
+                    <div class="audio-title">Sample 2 (No Punctuation)</div>
+                    <audio controls class="audio-player">
+                        <source src="../misc/audio/mindsentences/wav_no_punct/audio_1.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+                
+                <div class="audio-item">
+                    <div class="audio-title">Sample 3 (No Punctuation)</div>
+                    <audio controls class="audio-player">
+                        <source src="../misc/audio/mindsentences/wav_no_punct/audio_2.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+                
+                <div class="audio-item">
+                    <div class="audio-title">Sample 4 (No Punctuation)</div>
+                    <audio controls class="audio-player">
+                        <source src="../misc/audio/mindsentences/wav_no_punct/audio_3.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+                
+                <div class="audio-item">
+                    <div class="audio-title">Sample 5 (No Punctuation)</div>
+                    <audio controls class="audio-player">
+                        <source src="../misc/audio/mindsentences/wav_no_punct/audio_4.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+            </div>
+        </section>
+
+        <section class="results-summary">
+            <h2>Preliminary Results</h2>
+            <p>Early analyses show clear neural signatures of language processing in both MEG and EEG data:</p>
+            
+            <ul>
+                <li>Enhanced N400 responses to unpredictable words</li>
+                <li>Left temporal lobe activation during syntactic processing</li>
+                <li>Significant differences in neural responses between standard and no-punctuation conditions</li>
+                <li>Correlation between comprehension accuracy and neural activity in frontal regions</li>
+            </ul>
+            
+            <p>Full results will be available once data analysis is complete.</p>
+        </section>
+
+        <footer>
+            <p>Last updated: February 2025 | Contact: your.email@university.edu</p>
+        </footer>
+    </div>
+
+    <script>
+        function openTab(evt, tabName) {
+            // Hide all tab content
+            var tabcontent = document.getElementsByClassName("tab-content");
+            for (var i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.remove("active");
+            }
+            
+            // Remove active class from all tabs
+            var tabs = document.getElementsByClassName("tab");
+            for (var i = 0; i < tabs.length; i++) {
+                tabs[i].classList.remove("active");
+            }
+            
+            // Show the specific tab content
+            document.getElementById(tabName).classList.add("active");
+            
+            // Add active class to the button that opened the tab
+            evt.currentTarget.classList.add("active");
+        }
+    </script>
+</body>
+
+</html>

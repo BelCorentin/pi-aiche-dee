@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Probe Experiment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            padding: 30px;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-link {
+            display: inline-block;
+            margin: 0 10px 20px 0;
+            padding: 8px 15px;
+            background-color: #e7f4ff;
+            border-radius: 4px;
+            color: #2980b9;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            background-color: #d0e8ff;
+            transform: translateY(-2px);
+        }
+
+        header {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .intro {
+            margin-bottom: 30px;
+            text-align: justify;
+        }
+
+        .methodology {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .results-summary {
+            padding: 20px;
+            background-color: #f0f7fb;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #3498db;
+        }
+
+        .timeline {
+            display: flex;
+            margin: 30px 0;
+            padding: 20px 0;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .timeline::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #3498db;
+        }
+
+        .timeline-point {
+            min-width: 150px;
+            margin: 0 20px;
+            text-align: center;
+            position: relative;
+            padding-top: 30px;
+        }
+
+        .timeline-point::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 15px;
+            height: 15px;
+            background-color: #3498db;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .timeline-point .point-time {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #3498db;
+        }
+
+        .timeline-point .point-label {
+            font-size: 0.9em;
+        }
+
+        .coming-soon {
+            text-align: center;
+            padding: 40px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            margin: 30px 0;
+            border: 2px dashed #ccc;
+        }
+
+        .coming-soon h2 {
+            color: #3498db;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Probe Experiment</h1>
+            <p>Isolating components of cognitive processing in temporal sequence</p>
+        </header>
+
+        <nav>
+            <a href="../index.html" class="nav-link">Home</a>
+            <a href="../experiments.html" class="nav-link">All Experiments</a>
+        </nav>
+
+        <section class="intro">
+            <h2>Experiment Overview</h2>
+            <p>The Probe experiment uses precisely timed stimuli to isolate specific neural processes in cognitive 
+               processing. By carefully controlling the timing of probe stimuli, we can observe how different stages 
+               of processing interact and develop over time.</p>
+        </section>
+
+        <section class="methodology">
+            <h2>Methodology</h2>
+            <p>In this protocol, participants are presented with a primary task, and at precise time intervals, 
+               probe stimuli are introduced to measure the ongoing neural processes. This allows us to create 
+               a detailed temporal map of cognitive processing.</p>
+            
+            <h3>Temporal Sequence</h3>
+            <div class="timeline">
+                <div class="timeline-point">
+                    <div class="point-time">0ms</div>
+                    <div class="point-label">Primary Stimulus Onset</div>
+                </div>
+                <div class="timeline-point">
+                    <div class="point-time">100ms</div>
+                    <div class="point-label">Sensory Processing</div>
+                </div>
+                <div class="timeline-point">
+                    <div class="point-time">250ms</div>
+                    <div class="point-label">Probe 1: Attention</div>
+                </div>
+                <div class="timeline-point">
+                    <div class="point-time">400ms</div>
+                    <div class="point-label">Semantic Processing</div>
+                </div>
+                <div class="timeline-point">
+                    <div class="point-time">600ms</div>
+                    <div class="point-label">Probe 2: Integration</div>
+                </div>
+            </div>
+        </section>
+
+        <div class="coming-soon">
+            <h2>Full Experiment Details Coming Soon</h2>
+            <p>We are currently preparing detailed documentation and sample data for this experiment.</p>
+            <p>Check back later for:</p>
+            <ul style="display: inline-block; text-align: left;">
+                <li>Probe stimuli examples</li>
+                <li>Detailed experimental paradigm</li>
+                <li>Time-frequency analysis results</li>
+                <li>Interactive temporal maps</li>
+            </ul>
+        </div>
+
+        <footer>
+            <p>Last updated: February 2025 | Contact: your.email@university.edu</p>
+        </footer>
+    </div>
+</body>
+
+</html>
