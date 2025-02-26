@@ -102,7 +102,111 @@
             margin-bottom: 20px;
             text-align: center;
         }
+
+        .meeting-date {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 4px;
+            font-weight: bold;
+            margin: 25px 0 15px 0;
+        }
+
+        .toc {
+            background-color: #f8f9fa;
+            border: 1px solid #eaecef;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .toc h3 {
+            margin-top: 0;
+            color: #3498db;
+        }
+
+        .toc-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .toc-item {
+            padding: 8px 0;
+            border-bottom: 1px solid #eaecef;
+        }
+
+        .toc-item:last-child {
+            border-bottom: none;
+        }
+
+        .toc-link {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .toc-link:hover {
+            color: #2980b9;
+            padding-left: 5px;
+        }
+
+        .toc-date {
+            color: #7f8c8d;
+            font-size: 0.9em;
+            margin-left: 10px;
+        }
+
+        .next-meeting {
+            background-color: #e7f4ff;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .next-meeting h3 {
+            margin-top: 0;
+            color: #3498db;
+        }
     </style>
+    <script>
+        // This script will highlight the most recent upcoming Thursday
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date();
+            
+            // Find the next Thursday
+            let nextThursday = new Date(today);
+            nextThursday.setDate(today.getDate() + ((4 + 7 - today.getDay()) % 7));
+            
+            // Format date as YYYY-MM-DD for comparison
+            const formatDate = (date) => {
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                return `${year}-${month}-${day}`;
+            };
+            
+            const nextThursdayStr = formatDate(nextThursday);
+            
+            // Highlight the next meeting in TOC
+            const tocItems = document.querySelectorAll('.toc-item');
+            tocItems.forEach(item => {
+                const dateAttr = item.getAttribute('data-date');
+                if (dateAttr >= nextThursdayStr) {
+                    item.classList.add('next-meeting');
+                    // Only highlight the first upcoming Thursday
+                    return false;
+                }
+            });
+            
+            // Scroll to the section for the next meeting
+            const nextMeetingSection = document.getElementById(`meeting-${nextThursdayStr}`);
+            if (nextMeetingSection) {
+                nextMeetingSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    </script>
 </head>
 
 <body>
@@ -114,6 +218,37 @@
         <div class="nav-bar">
             <a href="index.html" class="nav-link">Home</a>
             <a href="experiments.html" class="nav-link">Experiments</a>
+        </div>
+
+        <div class="next-meeting">
+            <h3>Next Meeting: Thursday, February 27, 2025</h3>
+            <p>Meeting focus: Initial research planning and literature review discussion</p>
+        </div>
+
+        <div class="toc">
+            <h3>Upcoming Meetings</h3>
+            <ul class="toc-list">
+                <li class="toc-item" data-date="2025-02-27">
+                    <a href="#meeting-2025-02-27" class="toc-link">Thursday, February 27</a>
+                    <span class="toc-date">Initial Research Planning</span>
+                </li>
+                <li class="toc-item" data-date="2025-03-06">
+                    <a href="#meeting-2025-03-06" class="toc-link">Thursday, March 6</a>
+                    <span class="toc-date">Methodology Discussion</span>
+                </li>
+                <li class="toc-item" data-date="2025-03-13">
+                    <a href="#meeting-2025-03-13" class="toc-link">Thursday, March 13</a>
+                    <span class="toc-date">Data Collection Planning</span>
+                </li>
+                <li class="toc-item" data-date="2025-03-20">
+                    <a href="#meeting-2025-03-20" class="toc-link">Thursday, March 20</a>
+                    <span class="toc-date">Preliminary Results Review</span>
+                </li>
+                <li class="toc-item" data-date="2025-03-27">
+                    <a href="#meeting-2025-03-27" class="toc-link">Thursday, March 27</a>
+                    <span class="toc-date">Analysis Techniques</span>
+                </li>
+            </ul>
         </div>
 
         <section>
@@ -128,23 +263,70 @@
             </div>
         </section>
 
-        <section>
-            <h2>Research Documents</h2>
+        <section id="meeting-2025-02-27">
+            <div class="meeting-date">Thursday, February 27, 2025</div>
+            <h3>Initial Research Planning</h3>
             <div class="report-container">
                 <div class="report-card">
                     <div class="report-title">Research Proposal</div>
-                    <div class="report-date">February 27, 2025</div>
                     <p>Initial research proposal outlining scope and goals.</p>
                     <a href="files/week1/research_proposal.pdf" class="report-link">View Document</a>
                 </div>
                 
                 <div class="report-card">
-                    <div class="report-title">Methodology</div>
-                    <div class="report-date">March 6, 2025</div>
+                    <div class="report-title">Literature Review Plan</div>
+                    <p>Systematic approach to literature review and key papers.</p>
+                    <a href="files/week1/literature_review_plan.pdf" class="report-link">View Document</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="meeting-2025-03-06">
+            <div class="meeting-date">Thursday, March 6, 2025</div>
+            <h3>Methodology Discussion</h3>
+            <div class="report-container">
+                <div class="report-card">
+                    <div class="report-title">Methodology Draft</div>
                     <p>Research methodology and data collection approaches.</p>
                     <a href="files/week2/methodology_draft.pdf" class="report-link">View Document</a>
                 </div>
+                
+                <div class="report-card">
+                    <div class="report-title">Literature Review Progress</div>
+                    <p>Summary of key findings from initial literature review.</p>
+                    <a href="files/week2/lit_review_progress.pdf" class="report-link">View Document</a>
+                </div>
             </div>
+        </section>
+
+        <section id="meeting-2025-03-13">
+            <div class="meeting-date">Thursday, March 13, 2025</div>
+            <h3>Data Collection Planning</h3>
+            <div class="report-container">
+                <div class="report-card">
+                    <div class="report-title">Data Collection Plan</div>
+                    <p>Detailed protocol for experimental data collection.</p>
+                    <a href="files/week3/data_collection_plan.pdf" class="report-link">View Document</a>
+                </div>
+                
+                <div class="report-card">
+                    <div class="report-title">Research Timeline</div>
+                    <p>Updated timeline with key milestones and deadlines.</p>
+                    <a href="files/week3/research_timeline.pdf" class="report-link">View Document</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="meeting-2025-03-20">
+            <div class="meeting-date">Thursday, March 20, 2025</div>
+            <h3>Preliminary Results Review</h3>
+            <p class="report-card">Meeting documents will be added after the meeting.</p>
+        </section>
+
+        <section id="meeting-2025-03-27">
+            <div class="meeting-date">Thursday, March 27, 2025</div>
+            <h3>Analysis Techniques</h3>
+            <p class="report-card">Meeting documents will be added after the meeting.</p>
         </section>
 
         <footer>
