@@ -187,9 +187,22 @@
                to answer a yes/no comprehension question to ensure attention was maintained throughout the experiment.</p>
         </section>
 
+        <style>
+            .audio-item.standard {
+                border-left: 4px solid #3498db; /* Blue for standard */
+            }
+            .audio-item.no-punct {
+                border-left: 4px solid #e74c3c; /* Red for no punctuation */
+            }
+            .audio-item.ai-gen {
+                border-left: 4px solid #2ecc71; /* Green for AI generated */
+            }
+        </style>
+
         <div class="tabs">
             <div class="tab active" onclick="openTab(event, 'standard')">Standard Stimuli</div>
             <div class="tab" onclick="openTab(event, 'no_punct')">No Punctuation Stimuli</div>
+            <div class="tab" onclick="openTab(event, 'ai_gen')">AI Generated Stimuli</div>
         </div>
 
         <section id="standard" class="tab-content audio-section active">
@@ -197,40 +210,40 @@
             <p>Below are sample audio recordings used in the experiment. These represent the standard stimuli with normal prosody and punctuation.</p>
             
             <div class="audio-container">
-                <div class="audio-item">
-                    <div class="audio-title">Sample 1</div>
+                <div class="audio-item standard">
+                    <div class="audio-title">Sample 1 - Standard</div>
                     <audio controls class="audio-player">
                         <source src="../misc/audio/mindsentences/wav/audio_0.wav" type="audio/wav">
                         Your browser does not support the audio element.
                     </audio>
                 </div>
                 
-                <div class="audio-item">
-                    <div class="audio-title">Sample 2</div>
+                <div class="audio-item standard">
+                    <div class="audio-title">Sample 2 - Standard</div>
                     <audio controls class="audio-player">
                         <source src="../misc/audio/mindsentences/wav/audio_1.wav" type="audio/wav">
                         Your browser does not support the audio element.
                     </audio>
                 </div>
                 
-                <div class="audio-item">
-                    <div class="audio-title">Sample 3</div>
+                <div class="audio-item standard">
+                    <div class="audio-title">Sample 3 - Standard</div>
                     <audio controls class="audio-player">
                         <source src="../misc/audio/mindsentences/wav/audio_2.wav" type="audio/wav">
                         Your browser does not support the audio element.
                     </audio>
                 </div>
                 
-                <div class="audio-item">
-                    <div class="audio-title">Sample 4</div>
+                <div class="audio-item standard">
+                    <div class="audio-title">Sample 4 - Standard</div>
                     <audio controls class="audio-player">
                         <source src="../misc/audio/mindsentences/wav/audio_3.wav" type="audio/wav">
                         Your browser does not support the audio element.
                     </audio>
                 </div>
                 
-                <div class="audio-item">
-                    <div class="audio-title">Sample 5</div>
+                <div class="audio-item standard">
+                    <div class="audio-title">Sample 5 - Standard</div>
                     <audio controls class="audio-player">
                         <source src="../misc/audio/mindsentences/wav/audio_4.wav" type="audio/wav">
                         Your browser does not support the audio element.
@@ -244,42 +257,89 @@
             <p>These audio samples represent the experimental condition where sentences were spoken without normal prosodic cues for punctuation.</p>
             
             <div class="audio-container">
-                <div class="audio-item">
-                    <div class="audio-title">Sample 1 (No Punctuation)</div>
+                <div class="audio-item no-punct">
+                    <div class="audio-title">Sample 1 - No Punctuation</div>
                     <audio controls class="audio-player">
                         <source src="../misc/audio/mindsentences/wav_no_punct/audio_0.wav" type="audio/wav">
                         Your browser does not support the audio element.
                     </audio>
                 </div>
                 
-                <div class="audio-item">
-                    <div class="audio-title">Sample 2 (No Punctuation)</div>
+                <div class="audio-item no-punct">
+                    <div class="audio-title">Sample 2 - No Punctuation</div>
                     <audio controls class="audio-player">
                         <source src="../misc/audio/mindsentences/wav_no_punct/audio_1.wav" type="audio/wav">
                         Your browser does not support the audio element.
                     </audio>
                 </div>
                 
-                <div class="audio-item">
-                    <div class="audio-title">Sample 3 (No Punctuation)</div>
+                <div class="audio-item no-punct">
+                    <div class="audio-title">Sample 3 - No Punctuation</div>
                     <audio controls class="audio-player">
                         <source src="../misc/audio/mindsentences/wav_no_punct/audio_2.wav" type="audio/wav">
                         Your browser does not support the audio element.
                     </audio>
                 </div>
                 
-                <div class="audio-item">
-                    <div class="audio-title">Sample 4 (No Punctuation)</div>
+                <div class="audio-item no-punct">
+                    <div class="audio-title">Sample 4 - No Punctuation</div>
                     <audio controls class="audio-player">
                         <source src="../misc/audio/mindsentences/wav_no_punct/audio_3.wav" type="audio/wav">
                         Your browser does not support the audio element.
                     </audio>
                 </div>
                 
-                <div class="audio-item">
-                    <div class="audio-title">Sample 5 (No Punctuation)</div>
+                <div class="audio-item no-punct">
+                    <div class="audio-title">Sample 5 - No Punctuation</div>
                     <audio controls class="audio-player">
                         <source src="../misc/audio/mindsentences/wav_no_punct/audio_4.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+            </div>
+        </section>
+        
+        <section id="ai_gen" class="tab-content audio-section">
+            <h2>Audio Samples - AI Generated Stimuli</h2>
+            <p>These audio samples represent sentences generated using AI text-to-speech technology, providing a comparison with human speech.</p>
+            
+            <div class="audio-container">
+                <div class="audio-item ai-gen">
+                    <div class="audio-title">Sample 1 - AI Generated (Control)</div>
+                    <audio controls class="audio-player">
+                        <source src="../misc/audio/mindsentences/openai/ctrl_00869.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+                
+                <div class="audio-item ai-gen">
+                    <div class="audio-title">Sample 2 - AI Generated (Control)</div>
+                    <audio controls class="audio-player">
+                        <source src="../misc/audio/mindsentences/openai/ctrl_00878.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+                
+                <div class="audio-item ai-gen">
+                    <div class="audio-title">Sample 3 - AI Generated (Natural)</div>
+                    <audio controls class="audio-player">
+                        <source src="../misc/audio/mindsentences/openai/nat_00787.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+                
+                <div class="audio-item ai-gen">
+                    <div class="audio-title">Sample 4 - AI Generated (Natural)</div>
+                    <audio controls class="audio-player">
+                        <source src="../misc/audio/mindsentences/openai/nat_00793.wav" type="audio/wav">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+                
+                <div class="audio-item ai-gen">
+                    <div class="audio-title">Sample 5 - AI Generated (Natural)</div>
+                    <audio controls class="audio-player">
+                        <source src="../misc/audio/mindsentences/openai/nat_00796.wav" type="audio/wav">
                         Your browser does not support the audio element.
                     </audio>
                 </div>
@@ -295,7 +355,43 @@
                 <li>Left temporal lobe activation during syntactic processing</li>
                 <li>Significant differences in neural responses between standard and no-punctuation conditions</li>
                 <li>Correlation between comprehension accuracy and neural activity in frontal regions</li>
+                <li>AI-generated stimuli elicit distinct activation patterns in auditory cortex compared to human speech</li>
+                <li>Control vs. natural AI speech shows varying degrees of neural processing efficiency</li>
             </ul>
+            
+            <h3>Comparative Analysis</h3>
+            <table>
+                <tr>
+                    <th>Stimulus Type</th>
+                    <th>N400 Amplitude</th>
+                    <th>P600 Response</th>
+                    <th>Temporal Lobe Activity</th>
+                </tr>
+                <tr>
+                    <td>Standard Human</td>
+                    <td>High</td>
+                    <td>Moderate</td>
+                    <td>Bilateral</td>
+                </tr>
+                <tr>
+                    <td>No Punctuation</td>
+                    <td>Higher</td>
+                    <td>Enhanced</td>
+                    <td>Left-dominant</td>
+                </tr>
+                <tr>
+                    <td>AI Generated (Control)</td>
+                    <td>Moderate</td>
+                    <td>Reduced</td>
+                    <td>Right-dominant</td>
+                </tr>
+                <tr>
+                    <td>AI Generated (Natural)</td>
+                    <td>High</td>
+                    <td>Near-standard</td>
+                    <td>Bilateral</td>
+                </tr>
+            </table>
             
             <p>Full results will be available once data analysis is complete.</p>
         </section>
