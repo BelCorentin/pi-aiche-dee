@@ -75,3 +75,25 @@ Pipeline completed successfully in 12.24 seconds
 2025-02-26 23:01:46,712 - INFO - 
 === Step 3: Updating GitHub website ===
 2025-02-26 23:01:46,744 - WARNING - Could not find the Weekly Meetings section in index.html
+2025-02-26 23:01:51,961 - INFO - Changes committed and pushed to GitHub
+2025-02-26 23:01:52,842 - ERROR - Failed to send email notification: (535, b'5.7.8 Username and Password not accepted. For more information, go to\n5.7.8  https://support.google.com/mail/?p=BadCredentials ffacd0b85a97d-390e47b6cd8sm100402f8f.44 - gsmtp')
+2025-02-26 23:01:52,842 - INFO - GitHub website updated with report: /home/co/git/pi-aiche-dee/files/week9_2025/mne_report_2025-02-26.html
+2025-02-26 23:01:52,842 - INFO - 
+Pipeline completed successfully in 10.08 seconds
+2025-02-26 23:01:52,842 - INFO - Report available at: /home/co/data/mne_reports/mne_report_2025-02-26.html
+2025-02-26 23:01:52,842 - INFO - GitHub website updated with the new report
+2025-02-26 23:13:50,009 - INFO - Starting MNE report pipeline at 2025-02-26 23:13:50
+2025-02-26 23:13:50,009 - INFO - 
+=== Step 1: Syncing and organizing figures ===
+2025-02-26 23:13:50,009 - INFO - Syncing figures from cluster...
+2025-02-26 23:13:50,469 - INFO - Sync complete!
+2025-02-26 23:13:50,470 - INFO - Synced 3 new figure(s)
+2025-02-26 23:13:50,472 - INFO - Found 3 PNG files to organize
+2025-02-26 23:13:50,483 - INFO - Updated metadata database with 3 entries
+2025-02-26 23:13:50,483 - INFO - Files organized successfully
+2025-02-26 23:13:50,484 - INFO - 
+=== Step 2: Generating MNE report ===
+2025-02-26 23:13:52,007 - INFO - Report generated at: /home/co/data/mne_reports/mne_report_2025-02-26.html
+2025-02-26 23:13:52,007 - INFO - 
+=== Step 3: Updating GitHub website ===
+2025-02-26 23:13:52,014 - WARNING - Could not find the Weekly Meetings section in index.html
