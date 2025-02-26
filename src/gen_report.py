@@ -204,8 +204,8 @@ def generate_mne_report():
                             # Add figures
                             for fig_path, filename, meta in figures:
                                 fig_title = filename.replace('.png', '').replace('_', ' ').title()
-                                report.add_figure(
-                                    fig=fig_path,
+                                report.add_image(
+                                    image=fig_path,
                                     title=fig_title,
                                     caption=generate_caption(meta)
                                 )

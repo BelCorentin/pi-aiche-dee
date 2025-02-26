@@ -1,0 +1,55 @@
+2025-02-26 16:01:02,106 - INFO - Starting MNE report pipeline at 2025-02-26 16:01:02
+2025-02-26 16:01:02,107 - INFO - 
+=== Step 1: Syncing and organizing figures ===
+2025-02-26 16:01:02,107 - INFO - Syncing figures from cluster...
+2025-02-26 16:01:03,042 - INFO - Sync complete!
+2025-02-26 16:01:03,043 - INFO - Synced 1 new figure(s)
+2025-02-26 16:01:03,043 - INFO - Found 1 PNG files to organize
+2025-02-26 16:01:03,045 - INFO - Updated metadata database with 1 entries
+2025-02-26 16:01:03,045 - INFO - Files organized successfully
+2025-02-26 16:01:03,045 - INFO - 
+=== Step 2: Generating MNE report ===
+2025-02-26 16:01:04,295 - ERROR - Error generating report: It seems you passed a path to `add_figure`. However, only Matplotlib figures, PyVista scenes, and NumPy arrays are accepted. You may want to try `add_image` instead. The provided path was: /
+2025-02-26 16:01:04,296 - ERROR - Traceback (most recent call last):
+  File "/home/co/git/pi-aiche-dee/src/gen_report.py", line 207, in generate_mne_report
+    report.add_figure(
+  File "/home/co/.local/lib/python3.10/site-packages/mne/report/report.py", line 2328, in add_figure
+    raise TypeError(
+TypeError: It seems you passed a path to `add_figure`. However, only Matplotlib figures, PyVista scenes, and NumPy arrays are accepted. You may want to try `add_image` instead. The provided path was: /
+
+2025-02-26 16:01:05,883 - ERROR - Failed to send email notification: 'NoneType' object has no attribute 'encode'
+2025-02-26 16:01:05,884 - ERROR - Report generation failed, aborting pipeline
+2025-02-26 16:04:41,021 - INFO - Starting MNE report pipeline at 2025-02-26 16:04:41
+2025-02-26 16:04:41,022 - INFO - 
+=== Step 1: Syncing and organizing figures ===
+2025-02-26 16:04:41,022 - INFO - Syncing figures from cluster...
+2025-02-26 16:04:41,838 - INFO - Sync complete!
+2025-02-26 16:04:41,838 - INFO - Synced 1 new figure(s)
+2025-02-26 16:04:41,839 - INFO - Found 1 PNG files to organize
+2025-02-26 16:04:41,840 - INFO - Updated metadata database with 1 entries
+2025-02-26 16:04:41,840 - INFO - Files organized successfully
+2025-02-26 16:04:41,840 - INFO - 
+=== Step 2: Generating MNE report ===
+2025-02-26 16:04:42,718 - ERROR - Error generating report: Report.add_image() got an unexpected keyword argument 'img'
+2025-02-26 16:04:42,718 - ERROR - Traceback (most recent call last):
+  File "/home/co/git/pi-aiche-dee/src/gen_report.py", line 207, in generate_mne_report
+    report.add_image(
+TypeError: Report.add_image() got an unexpected keyword argument 'img'
+
+2025-02-26 16:04:44,494 - ERROR - Failed to send email notification: (535, b'5.7.8 Username and Password not accepted. For more information, go to\n5.7.8  https://support.google.com/mail/?p=BadCredentials 5b1f17b1804b1-43aba5396desm24250345e9.20 - gsmtp')
+2025-02-26 16:04:44,495 - ERROR - Report generation failed, aborting pipeline
+2025-02-26 16:05:19,978 - INFO - Starting MNE report pipeline at 2025-02-26 16:05:19
+2025-02-26 16:05:19,978 - INFO - 
+=== Step 1: Syncing and organizing figures ===
+2025-02-26 16:05:19,978 - INFO - Syncing figures from cluster...
+2025-02-26 16:05:20,438 - INFO - Sync complete!
+2025-02-26 16:05:20,438 - INFO - Synced 0 new figure(s)
+2025-02-26 16:05:20,440 - INFO - Found 1 PNG files to organize
+2025-02-26 16:05:20,443 - INFO - Updated metadata database with 1 entries
+2025-02-26 16:05:20,444 - INFO - Files organized successfully
+2025-02-26 16:05:20,444 - INFO - 
+=== Step 2: Generating MNE report ===
+2025-02-26 16:05:23,045 - INFO - Report generated at: /home/co/data/mne_reports/mne_report_2025-02-26.html
+2025-02-26 16:05:23,045 - INFO - 
+=== Step 3: Updating GitHub website ===
+2025-02-26 16:05:23,055 - INFO - Updated index.html with new report link
