@@ -311,8 +311,6 @@ def generate_mne_report():
                         image=fig_path,
                         title=fig_title,
                         caption=caption,
-                        image_format='PNG',
-                        scale=0.7  # Make images 70% of original size
                     )
                 
                 # End figure grid
