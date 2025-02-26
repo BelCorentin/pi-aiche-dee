@@ -53,3 +53,10 @@ TypeError: Report.add_image() got an unexpected keyword argument 'img'
 2025-02-26 16:05:23,045 - INFO - 
 === Step 3: Updating GitHub website ===
 2025-02-26 16:05:23,055 - INFO - Updated index.html with new report link
+2025-02-26 16:05:27,978 - INFO - Changes committed and pushed to GitHub
+2025-02-26 16:05:32,218 - ERROR - Failed to send email notification: (535, b'5.7.8 Username and Password not accepted. For more information, go to\n5.7.8  https://support.google.com/mail/?p=BadCredentials d9443c01a7336-2230a01fb35sm33291645ad.84 - gsmtp')
+2025-02-26 16:05:32,219 - INFO - GitHub website updated with report: /home/co/git/pi-aiche-dee/files/week9_2025/mne_report_2025-02-26.html
+2025-02-26 16:05:32,219 - INFO - 
+Pipeline completed successfully in 12.24 seconds
+2025-02-26 16:05:32,220 - INFO - Report available at: /home/co/data/mne_reports/mne_report_2025-02-26.html
+2025-02-26 16:05:32,220 - INFO - GitHub website updated with the new report
