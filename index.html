@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My PhD Journey</title>
+    <title>PhD Research</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -14,9 +14,7 @@
             background-color: #f5f5f5;
         }
 
-        h1,
-        h2,
-        h3 {
+        h1, h2, h3 {
             color: #2c3e50;
         }
 
@@ -29,43 +27,79 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
-        .meeting-section {
+        .nav-bar {
+            display: flex;
+            gap: 15px;
             margin-bottom: 30px;
-            padding: 20px;
-            border-left: 4px solid #3498db;
-            background-color: #f9f9f9;
-            border-radius: 0 8px 8px 0;
         }
 
-        .meeting-date {
-            font-weight: bold;
-            color: #3498db;
-            margin-bottom: 10px;
-        }
-
-        .file-link {
+        .nav-link {
             display: inline-block;
-            margin: 5px 10px 5px 0;
-            padding: 8px 15px;
-            background-color: #e7f4ff;
+            padding: 10px 20px;
+            background-color: #3498db;
             border-radius: 4px;
-            color: #2980b9;
+            color: white;
             text-decoration: none;
+            font-weight: bold;
             transition: all 0.3s ease;
         }
 
-        .file-link:hover {
-            background-color: #d0e8ff;
+        .nav-link:hover {
+            background-color: #2980b9;
             transform: translateY(-2px);
         }
 
-        .intro {
-            margin-bottom: 30px;
-            text-align: justify;
+        .report-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .report-card {
+            flex: 1;
+            min-width: 250px;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #f0f7fb;
+            border-left: 4px solid #3498db;
+            transition: transform 0.3s ease;
+        }
+
+        .report-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .report-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2c3e50;
+            font-size: 1.2em;
+        }
+
+        .report-date {
+            color: #7f8c8d;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+
+        .report-link {
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: #3498db;
+            border-radius: 4px;
+            color: white;
+            text-decoration: none;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .report-link:hover {
+            background-color: #2980b9;
         }
 
         header {
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             text-align: center;
         }
     </style>
@@ -74,90 +108,47 @@
 <body>
     <div class="container">
         <header>
-            <h1>PhD Progress</h1>
-            <p>Tracking progress through weekly meetings and research artifacts</p>
+            <h1>PhD Research</h1>
         </header>
 
-        <nav>
-            <a href="index.html" class="file-link">Home</a>
-            <a href="experiments.html" class="file-link">Experiments</a>
-        </nav>
+        <div class="nav-bar">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="experiments.html" class="nav-link">Experiments</a>
+        </div>
 
-        <section class="intro">
-            <h2>About My Research</h2>
-            <p>Welcome to my PhD research homepage. This site documents my research journey, including weekly meetings
-                with my supervisors, research progress, and important documents. Each meeting section contains notes and
-                relevant files that showcase the evolution of my work.</p>
-            <!-- Add more details about your research focus, goals, etc. -->
-        </section>
-
-        <h2>Weekly Meetings</h2>
-
-            <div class="meeting-section">
-                <div class="meeting-date">Wednesday, February 26, 2025</div>
-                <h3>MEG/EEG Analysis Update</h3>
-                <p>This update includes the latest MEG and EEG analyses with 1 figures 
-                   from 1 subjects across 1 tasks. The report includes 
-                   preprocessing results, source localization, and statistical analyses.</p>
-                <div class="meeting-files">
-                    <h4>Files:</h4>
-                    <a href="files/week9_2025/mne_report_2025-02-26.html" class="file-link">MNE Analysis Report</a>
+        <section>
+            <h2>MEG/EEG Reports</h2>
+            <div class="report-container">
+                <div class="report-card">
+                    <div class="report-title">Latest MEG/EEG Analysis</div>
+                    <div class="report-date">February 26, 2025</div>
+                    <p>Current analysis results including preprocessing, source localization, and statistical analyses.</p>
+                    <a href="files/week9_2025/mne_report_2025-02-26.html" class="report-link">View Report</a>
                 </div>
             </div>
-    
+        </section>
 
-        <div class="meeting-section">
-            <div class="meeting-date">Thursday, February 27, 2025</div>
-            <h3>Initial Research Planning</h3>
-            <p>During this first meeting, we discussed the scope of my research and established preliminary goals. Key
-                points included literature review strategy and initial research questions.</p>
-            <div class="meeting-files">
-                <h4>Files:</h4>
-                <a href="files/week1/research_proposal.pdf" class="file-link">Research Proposal</a>
-                <a href="files/week1/literature_review_plan.pdf" class="file-link">Literature Review Plan</a>
+        <section>
+            <h2>Research Documents</h2>
+            <div class="report-container">
+                <div class="report-card">
+                    <div class="report-title">Research Proposal</div>
+                    <div class="report-date">February 27, 2025</div>
+                    <p>Initial research proposal outlining scope and goals.</p>
+                    <a href="files/week1/research_proposal.pdf" class="report-link">View Document</a>
+                </div>
+                
+                <div class="report-card">
+                    <div class="report-title">Methodology</div>
+                    <div class="report-date">March 6, 2025</div>
+                    <p>Research methodology and data collection approaches.</p>
+                    <a href="files/week2/methodology_draft.pdf" class="report-link">View Document</a>
+                </div>
             </div>
-        </div>
-
-        <div class="meeting-section">
-            <div class="meeting-date">Thursday, March 6, 2025</div>
-            <h3>Methodology Discussion</h3>
-            <p>We refined the research methodology and discussed potential data collection approaches. Feedback was
-                provided on the initial literature findings.</p>
-            <div class="meeting-files">
-                <h4>Files:</h4>
-                <a href="files/week2/methodology_draft.pdf" class="file-link">Methodology Draft</a>
-                <a href="files/week2/lit_review_progress.pdf" class="file-link">Literature Review Progress</a>
-            </div>
-        </div>
-
-        <div class="meeting-section">
-            <div class="meeting-date">Thursday, March 13, 2025</div>
-            <h3>Data Collection Planning</h3>
-            <p>This meeting focused on finalizing the data collection instruments and establishing a timeline for the
-                first phase of research.</p>
-            <div class="meeting-files">
-                <h4>Files:</h4>
-                <a href="files/week3/data_collection_plan.pdf" class="file-link">Data Collection Plan</a>
-                <a href="files/week3/research_timeline.pdf" class="file-link">Research Timeline</a>
-            </div>
-        </div>
-
-        <!-- Template for future meetings (commented out) -->
-        <!--
-        <div class="meeting-section">
-            <div class="meeting-date">Thursday, [Date]</div>
-            <h3>[Meeting Title]</h3>
-            <p>[Meeting summary and key points discussed]</p>
-            <div class="meeting-files">
-                <h4>Files:</h4>
-                <a href="files/week#/filename.pdf" class="file-link">[File Description]</a>
-                <a href="files/week#/filename.pdf" class="file-link">[File Description]</a>
-            </div>
-        </div>
-        -->
+        </section>
 
         <footer>
-            <p>Last updated: February 2025 | Contact: your.email@university.edu</p>
+            <p>Last updated: February 2025</p>
         </footer>
     </div>
 </body>
