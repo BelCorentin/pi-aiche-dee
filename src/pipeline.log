@@ -60,3 +60,18 @@ TypeError: Report.add_image() got an unexpected keyword argument 'img'
 Pipeline completed successfully in 12.24 seconds
 2025-02-26 16:05:32,220 - INFO - Report available at: /home/co/data/mne_reports/mne_report_2025-02-26.html
 2025-02-26 16:05:32,220 - INFO - GitHub website updated with the new report
+2025-02-26 23:01:42,763 - INFO - Starting MNE report pipeline at 2025-02-26 23:01:42
+2025-02-26 23:01:42,763 - INFO - 
+=== Step 1: Syncing and organizing figures ===
+2025-02-26 23:01:42,763 - INFO - Syncing figures from cluster...
+2025-02-26 23:01:43,371 - INFO - Sync complete!
+2025-02-26 23:01:43,371 - INFO - Synced 3 new figure(s)
+2025-02-26 23:01:43,373 - INFO - Found 4 PNG files to organize
+2025-02-26 23:01:43,385 - INFO - Updated metadata database with 4 entries
+2025-02-26 23:01:43,385 - INFO - Files organized successfully
+2025-02-26 23:01:43,385 - INFO - 
+=== Step 2: Generating MNE report ===
+2025-02-26 23:01:46,712 - INFO - Report generated at: /home/co/data/mne_reports/mne_report_2025-02-26.html
+2025-02-26 23:01:46,712 - INFO - 
+=== Step 3: Updating GitHub website ===
+2025-02-26 23:01:46,744 - WARNING - Could not find the Weekly Meetings section in index.html
