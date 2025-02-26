@@ -14,7 +14,9 @@
             background-color: #f5f5f5;
         }
 
-        h1, h2, h3 {
+        h1,
+        h2,
+        h3 {
             color: #2c3e50;
         }
 
@@ -172,13 +174,13 @@
     </style>
     <script>
         // This script will highlight the most recent upcoming Thursday
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const today = new Date();
-            
+
             // Find the next Thursday
             let nextThursday = new Date(today);
             nextThursday.setDate(today.getDate() + ((4 + 7 - today.getDay()) % 7));
-            
+
             // Format date as YYYY-MM-DD for comparison
             const formatDate = (date) => {
                 const year = date.getFullYear();
@@ -186,9 +188,9 @@
                 const day = String(date.getDate()).padStart(2, '0');
                 return `${year}-${month}-${day}`;
             };
-            
+
             const nextThursdayStr = formatDate(nextThursday);
-            
+
             // Highlight the next meeting in TOC
             const tocItems = document.querySelectorAll('.toc-item');
             tocItems.forEach(item => {
@@ -199,7 +201,7 @@
                     return false;
                 }
             });
-            
+
             // Scroll to the section for the next meeting
             const nextMeetingSection = document.getElementById(`meeting-${nextThursdayStr}`);
             if (nextMeetingSection) {
@@ -222,7 +224,7 @@
 
         <div class="next-meeting">
             <h3>Next Meeting: Thursday, February 27, 2025</h3>
-            <p>Meeting focus: Initial research planning and literature review discussion</p>
+            <p>Long time no see: chat about the sentences, distraction results, etc..</p>
         </div>
 
         <div class="toc">
@@ -252,12 +254,14 @@
         </div>
 
         <section>
-            <h2>MEG/EEG Reports</h2>
+            <h2>Weekly meetings</h2>
             <div class="report-container">
                 <div class="report-card">
-                    <div class="report-title">Latest MEG/EEG Analysis</div>
+                    <div class="report-title">Today, on the menu:</div>
                     <div class="report-date">February 26, 2025</div>
-                    <p>Current analysis results including preprocessing, source localization, and statistical analyses.</p>
+                    <p>Improving the next experiment's sentences, and discussing the results of the distraction / probe
+                        experiment.</p>
+                    </p>
                     <a href="files/week9_2025/mne_report_2025-02-26.html" class="report-link">View Report</a>
                 </div>
             </div>
@@ -272,7 +276,7 @@
                     <p>Initial research proposal outlining scope and goals.</p>
                     <a href="files/week1/research_proposal.pdf" class="report-link">View Document</a>
                 </div>
-                
+
                 <div class="report-card">
                     <div class="report-title">Literature Review Plan</div>
                     <p>Systematic approach to literature review and key papers.</p>
@@ -290,7 +294,7 @@
                     <p>Research methodology and data collection approaches.</p>
                     <a href="files/week2/methodology_draft.pdf" class="report-link">View Document</a>
                 </div>
-                
+
                 <div class="report-card">
                     <div class="report-title">Literature Review Progress</div>
                     <p>Summary of key findings from initial literature review.</p>
@@ -308,7 +312,7 @@
                     <p>Detailed protocol for experimental data collection.</p>
                     <a href="files/week3/data_collection_plan.pdf" class="report-link">View Document</a>
                 </div>
-                
+
                 <div class="report-card">
                     <div class="report-title">Research Timeline</div>
                     <p>Updated timeline with key milestones and deadlines.</p>

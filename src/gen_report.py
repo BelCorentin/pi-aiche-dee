@@ -83,8 +83,21 @@ def group_figures_by_metadata(category_path, metadata_db):
     
     return grouped
 
+def get_experiment_description(experiment_name):
+    """Get a description for each experiment type based on the experiment name"""
+    descriptions = {
+        "mindsentences": "Neural signatures of auditory language processing using MEG. This study focuses on syntax building and word decoding for controlled and naturalistic stimuli.",
+        "distraction": "Investigation of attention mechanisms during cognitive tasks with controlled distraction stimuli. It measures how participants maintain focus in challenging environments.",
+        "probe": "A protocol designed to probe specific neural processes using carefully timed stimuli. This experiment helps isolate components of cognitive processing in temporal sequence.",
+        "expertlm": "Research exploring how domain expertise affects language processing and comprehension. This experiment compares neural responses between expert and novice participants.",
+        # Add more experiment descriptions as needed
+    }
+    
+    # Default description for unrecognized experiments
+    return descriptions.get(experiment_name.lower(), "MEG/EEG analysis for neural signal processing.")
+
 def generate_mne_report():
-    """Generate an MNE report from the organized figures with enhanced organization"""
+    """Generate an MNE report from the organized figures with improved organization and layout"""
     try:
         # Create a new report
         report = mne.Report(title='MEG/EEG Analysis Report')
@@ -99,23 +112,38 @@ def generate_mne_report():
         category_dirs = [d for d in os.listdir(LOCAL_FIG_PATH) 
                         if os.path.isdir(os.path.join(LOCAL_FIG_PATH, d))]
         
-        # Custom CSS for better formatting
+        # Custom CSS for better formatting and smaller figures
         custom_css = """
         <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 20px;
+                line-height: 1.6;
+                color: #333;
+            }
+            
+            .mne-report-section {
+                margin-bottom: 30px;
+            }
+            
             .mne-report-section h2 {
                 padding: 10px;
                 background-color: #f0f0f8;
                 border-left: 5px solid #3498db;
+                margin: 30px 0 20px 0;
             }
             
             .mne-report-section h3 {
-                margin-top: 20px;
+                margin-top: 25px;
                 border-bottom: 2px solid #7cb9e8;
+                padding-bottom: 5px;
+                color: #2c3e50;
             }
             
             .mne-report-section h4 {
                 margin-top: 15px;
                 color: #2980b9;
+                font-size: 1.1em;
             }
             
             .mne-report-section figure {
@@ -123,33 +151,92 @@ def generate_mne_report():
                 padding: 10px;
                 margin: 15px 0;
                 transition: transform 0.2s;
+                max-width: 650px; /* Limit the maximum width of figures */
             }
             
-            .mne-report-section figure:hover {
-                transform: scale(1.02);
+            .mne-report-section img {
+                max-width: 100%;
+                height: auto;
             }
             
             .mne-report-section figcaption {
-                font-size: 14px;
+                font-size: 13px;
                 margin-top: 8px;
                 font-style: italic;
             }
             
-            .metadata-table {
-                font-size: 13px;
-                margin-bottom: 15px;
-                width: 100%;
-                border-collapse: collapse;
+            .experiment-description {
+                background-color: #f9f9f9;
+                padding: 15px;
+                border-left: 3px solid #3498db;
+                margin: 15px 0;
+                font-size: 14px;
             }
             
-            .metadata-table th, .metadata-table td {
+            .figure-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                grid-gap: 20px;
+                margin: 20px 0;
+            }
+            
+            .figure-container {
                 border: 1px solid #ddd;
-                padding: 8px;
-                text-align: left;
+                border-radius: 4px;
+                padding: 10px;
+                background-color: #fff;
             }
             
-            .metadata-table th {
-                background-color: #f2f2f2;
+            .figure-title {
+                font-weight: bold;
+                margin-bottom: 8px;
+                color: #2c3e50;
+                font-size: 14px;
+            }
+            
+            .overview-container {
+                background-color: #f0f7fb;
+                border-radius: 5px;
+                padding: 15px;
+                margin-bottom: 25px;
+                border-left: 5px solid #3498db;
+            }
+            
+            .category-container {
+                margin-bottom: 30px;
+                border-top: 1px solid #eee;
+                padding-top: 20px;
+            }
+            
+            .toc-container {
+                background-color: #f5f5f5;
+                border-radius: 5px;
+                padding: 15px;
+                margin-bottom: 25px;
+            }
+            
+            .toc-container h3 {
+                margin-top: 0;
+                border-bottom: 1px solid #ddd;
+                padding-bottom: 10px;
+            }
+            
+            .toc-container ul {
+                list-style-type: none;
+                padding-left: 10px;
+            }
+            
+            .toc-container li {
+                margin-bottom: 5px;
+            }
+            
+            .toc-container a {
+                text-decoration: none;
+                color: #3498db;
+            }
+            
+            .toc-container a:hover {
+                text-decoration: underline;
             }
         </style>
         """
@@ -157,58 +244,80 @@ def generate_mne_report():
         # Add custom CSS to the report
         report.add_custom_css(custom_css)
         
+        # Create table of contents list for later
+        toc_items = []
+        
         # Add overview section
         overview_html = f"""
-        <h2>Analysis Overview</h2>
-        <p>Report generated on {current_date}</p>
-        <p>This report contains MEG/EEG analysis results organized by analysis type.</p>
-        <p>Total figures: {sum(len(glob.glob(os.path.join(LOCAL_FIG_PATH, cat, "**/*.png"), recursive=True)) for cat in category_dirs)}</p>
+        <div class="overview-container">
+            <h2>MEG/EEG Analysis Report</h2>
+            <p><strong>Generated:</strong> {current_date}</p>
+            <p>This report contains MEG/EEG analysis results organized by experiment type.</p>
+            <p><strong>Total figures:</strong> {sum(len(glob.glob(os.path.join(LOCAL_FIG_PATH, cat, "**/*.png"), recursive=True)) for cat in category_dirs)}</p>
+        </div>
         """
         report.add_html(overview_html, title="Overview")
         
-        # Process each category
+        # Filter out empty categories and prepare table of contents
+        valid_categories = []
         for category in category_dirs:
+            category_path = os.path.join(LOCAL_FIG_PATH, category)
+            all_pngs = glob.glob(os.path.join(category_path, "**/*.png"), recursive=True)
+            if all_pngs:
+                valid_categories.append(category)
+                section_title = get_section_title(category_path)
+                toc_items.append(f'<li><a href="#{category.lower()}">{section_title}</a></li>')
+        
+        # Add table of contents
+        toc_html = f"""
+        <div class="toc-container">
+            <h3>Contents</h3>
+            <ul>
+                {''.join(toc_items)}
+            </ul>
+        </div>
+        """
+        report.add_html(toc_html, title="Table of Contents")
+        
+        # Process each valid category
+        for category in valid_categories:
             category_path = os.path.join(LOCAL_FIG_PATH, category)
             section_title = get_section_title(category_path)
             
-            # Check if there are any PNG files in this category (including subdirectories)
-            all_pngs = glob.glob(os.path.join(category_path, "**/*.png"), recursive=True)
-            if not all_pngs:
-                continue
-                
-            # Add category introduction
-            category_html = f"<h2>{section_title}</h2>"
+            # Add category introduction with anchor for TOC
+            category_html = f"""
+            <div class="category-container" id="{category.lower()}">
+                <h2>{section_title}</h2>
+                <div class="experiment-description">
+                    {get_experiment_description(category)}
+                </div>
+            </div>
+            """
             report.add_html(category_html, title=section_title)
             
-            # Process direct figures in the category folder
+            # Process figures directly in this category
             direct_figures = glob.glob(os.path.join(category_path, "*.png"))
             if direct_figures:
-                # Group figures by metadata
-                grouped = group_figures_by_metadata(category_path, metadata_db)
+                # Add figures in a grid layout
+                figures_html = '<div class="figure-grid">'
                 
-                for task, subjects in grouped.items():
-                    task_title = f"{task.replace('_', ' ').title()} Task"
-                    task_html = f"<h3>{task_title}</h3>"
-                    report.add_html(task_html, title=f"{section_title} - {task_title}")
+                for fig_path in direct_figures:
+                    filename = os.path.basename(fig_path)
+                    fig_title = filename.replace('.png', '').replace('_', ' ').title()
+                    meta = metadata_db.get(filename, {})
+                    caption = generate_caption(meta)
                     
-                    for subject, conditions in subjects.items():
-                        subj_title = f"Subject: {subject}"
-                        subj_html = f"<h4>{subj_title}</h4>"
-                        report.add_html(subj_html, title=f"{task_title} - {subj_title}")
-                        
-                        for condition, figures in conditions.items():
-                            cond_title = f"Condition: {condition}"
-                            cond_html = f"<h5>{cond_title}</h5>"
-                            report.add_html(cond_html, title=f"{subj_title} - {cond_title}")
-                            
-                            # Add figures
-                            for fig_path, filename, meta in figures:
-                                fig_title = filename.replace('.png', '').replace('_', ' ').title()
-                                report.add_image(
-                                    image=fig_path,
-                                    title=fig_title,
-                                    caption=generate_caption(meta)
-                                )
+                    report.add_image(
+                        image=fig_path,
+                        title=fig_title,
+                        caption=caption,
+                        image_format='PNG',
+                        scale=0.7  # Make images 70% of original size
+                    )
+                
+                # End figure grid
+                figures_html += '</div>'
+                report.add_html(figures_html, title=f"{section_title} - Figures")
             
             # Process subdirectories if any
             subdirs = [d for d in os.listdir(category_path) 
@@ -216,24 +325,32 @@ def generate_mne_report():
             
             for subdir in subdirs:
                 subdir_path = os.path.join(category_path, subdir)
-                subdir_title = f"{section_title} - {subdir.replace('_', ' ').title()}"
+                subdir_figures = glob.glob(os.path.join(subdir_path, "*.png"))
                 
-                # Add subdir introduction
-                subdir_html = f"<h3>{subdir_title}</h3>"
-                report.add_html(subdir_html, title=subdir_title)
+                if not subdir_figures:
+                    continue
+                    
+                subdir_title = f"{subdir.replace('_', ' ').title()}"
                 
-                # Add all figures in this subdirectory
-                for fig_file in glob.glob(os.path.join(subdir_path, "*.png")):
+                # Add subdir section
+                subdir_html = f"""
+                <h3>{subdir_title}</h3>
+                <p>Analysis results for {subdir_title} in the {section_title} experiment.</p>
+                """
+                report.add_html(subdir_html, title=f"{section_title} - {subdir_title}")
+                
+                # Add figures in a grid layout
+                for fig_file in subdir_figures:
                     filename = os.path.basename(fig_file)
                     fig_title = filename.replace('.png', '').replace('_', ' ').title()
-                    
-                    # Get metadata if available
                     meta = metadata_db.get(filename, {})
                     
-                    report.add_figure(
-                        fig=fig_file,
+                    report.add_image(
+                        image=fig_file,
                         title=fig_title,
-                        caption=generate_caption(meta)
+                        caption=generate_caption(meta),
+                        image_format='PNG',
+                        scale=0.7  # Make images 70% of original size
                     )
         
         # Save the report
@@ -255,21 +372,36 @@ def generate_mne_report():
         return None, datetime.now().strftime("%Y-%m-%d")
 
 def generate_caption(metadata):
-    """Generate a descriptive caption from metadata"""
+    """Generate a concise, descriptive caption from metadata"""
     if not metadata:
         return "No metadata available"
     
+    # Focus on the most important fields and make caption concise
+    important_fields = ['task', 'condition', 'analysis_type']
+    secondary_fields = ['subject', 'component', 'timestamp']
+    
     caption_parts = []
     
-    # Add important metadata in a readable format
-    for key in ['subject', 'task', 'condition', 'component', 'analysis_type']:
-        if key in metadata:
-            caption_parts.append(f"{key.replace('_', ' ').title()}: {metadata[key]}")
+    # Add primary information first
+    for key in important_fields:
+        if key in metadata and metadata[key]:
+            # Format and add field
+            value = metadata[key]
+            # Make task and analysis_type more readable
+            if key == 'task' or key == 'analysis_type':
+                value = value.replace('_', ' ').title()
+            caption_parts.append(f"{key.replace('_', ' ').title()}: {value}")
     
-    # Add acquisition date if available
-    if 'timestamp' in metadata:
-        caption_parts.append(f"Date: {metadata['timestamp']}")
+    # Add secondary information if available
+    for key in secondary_fields:
+        if key in metadata and metadata[key]:
+            # Format date differently
+            if key == 'timestamp':
+                caption_parts.append(f"Date: {metadata[key]}")
+            else:
+                caption_parts.append(f"{key.replace('_', ' ').title()}: {metadata[key]}")
     
+    # Join parts with a separator
     return " | ".join(caption_parts) if caption_parts else "No metadata available"
 
 def update_github_website(report_path, date):
