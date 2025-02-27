@@ -86,21 +86,21 @@ def group_figures_by_metadata(category_path, metadata_db):
 def get_experiment_description(experiment_name):
     """Get a description for each experiment type based on the experiment name"""
     descriptions = {
-        "mindsentences": "Neural signatures of auditory language processing using MEG. This study focuses on syntax building and word decoding for controlled and naturalistic stimuli.",
-        "distraction": "Investigation of attention mechanisms during cognitive tasks with controlled distraction stimuli. It measures how participants maintain focus in challenging environments.",
-        "probe": "A protocol designed to probe specific neural processes using carefully timed stimuli. This experiment helps isolate components of cognitive processing in temporal sequence.",
-        "expertlm": "Research exploring how domain expertise affects language processing and comprehension. This experiment compares neural responses between expert and novice participants.",
+        "mindsentences": "An experiment examining neural responses to auditory language processing using MEG. This study focuses on syntax building and word decoding for controlled and naturalistic stimuli.",
+        "distraction": "This experiment investigates how distractions impact neural dynamics of speech comprehension. Different types of distractions (math, memory tasks, etc.) are presented every other normal listening run.",
+        "probe": "An experiment where we try to probe both the brain and language models looking for syntactic cues.",
+        "expertlm": "Research exploring how preprompting a LLM with some expert qualification would change its embeddings, processing of information, and ultimately brain scores.",
         # Add more experiment descriptions as needed
     }
     
     # Default description for unrecognized experiments
-    return descriptions.get(experiment_name.lower(), "MEG/EEG analysis for neural signal processing.")
+    return descriptions.get(experiment_name.lower(), "MEG Weekly Analysis MNE Report.")
 
 def generate_mne_report():
     """Generate an MNE report from the organized figures with improved organization and layout"""
     try:
         # Create a new report
-        report = mne.Report(title='MEG/EEG Analysis Report')
+        report = mne.Report(title='MEG Weekly Analysis MNE Report')
         
         # Get current date for report naming
         current_date = datetime.now().strftime("%Y-%m-%d")
@@ -250,9 +250,9 @@ def generate_mne_report():
         # Add overview section
         overview_html = f"""
         <div class="overview-container">
-            <h2>MEG/EEG Analysis Report</h2>
+            <h2>MEG Weekly Analysis MNE Report</h2>
             <p><strong>Generated:</strong> {current_date}</p>
-            <p>This report contains MEG/EEG analysis results organized by experiment type.</p>
+            <p>This report contains the current week analyses's plots and figures.</p>
             <p><strong>Total figures:</strong> {sum(len(glob.glob(os.path.join(LOCAL_FIG_PATH, cat, "**/*.png"), recursive=True)) for cat in category_dirs)}</p>
         </div>
         """
@@ -362,11 +362,11 @@ def generate_mne_report():
     except Exception as e:
         logger.error(f"Error generating report: {str(e)}")
         logger.error(traceback.format_exc())
-        send_email_notification(
-            subject="MNE Report Generation Failed",
-            body=f"Error generating MNE report: {str(e)}\n\n{traceback.format_exc()}",
-            success=False
-        )
+        # send_email_notification(
+        #     subject="MNE Report Generation Failed",
+        #     body=f"Error generating MNE report: {str(e)}\n\n{traceback.format_exc()}",
+        #     success=False
+        # )
         return None, datetime.now().strftime("%Y-%m-%d")
 
 def generate_caption(metadata):
@@ -419,25 +419,25 @@ def update_github_website(report_path, date):
         update_index_html(report_filename, week_dir, date)
         
         # Commit and push changes
-        git_commit_and_push(f"Update with MEG/EEG report for {date}")
+        git_commit_and_push(f"Update MNE report on the {date}")
         
         # Send success notification
-        send_email_notification(
-            subject=f"MNE Report Updated - {date}",
-            body=f"Successfully generated and published MNE report for {date}.\n\nReport is available at: https://your-github-pages-url/files/{week_dir}/{report_filename}",
-            success=True
-        )
+        # send_email_notification(
+        #     subject=f"MNE Report Updated - {date}",
+        #     body=f"Successfully generated and published MNE report for {date}.\n\nReport is available at: https://your-github-pages-url/files/{week_dir}/{report_filename}",
+        #     success=True
+        # )
         
         logger.info(f"GitHub website updated with report: {github_report_path}")
         return True
     except Exception as e:
         logger.error(f"Error updating GitHub website: {str(e)}")
         logger.error(traceback.format_exc())
-        send_email_notification(
-            subject="GitHub Website Update Failed",
-            body=f"Error updating GitHub website: {str(e)}\n\n{traceback.format_exc()}",
-            success=False
-        )
+        # send_email_notification(
+        #     subject="GitHub Website Update Failed",
+        #     body=f"Error updating GitHub website: {str(e)}\n\n{traceback.format_exc()}",
+        #     success=False
+        # )
         return False
 
 def get_week_directory(date_str):
@@ -470,8 +470,8 @@ def update_index_html(report_filename, week_dir, date_str):
         new_section = f'''
             <div class="meeting-section">
                 <div class="meeting-date">{formatted_date}</div>
-                <h3>MEG/EEG Analysis Update</h3>
-                <p>This update includes the latest MEG and EEG analyses with {total_figures} figures 
+                <h3>Weekly Update</h3>
+                <p>This update includes the latest MEG analyses with {total_figures} figures 
                    from {len(subjects)} subjects across {len(tasks)} tasks. The report includes 
                    preprocessing results, source localization, and statistical analyses.</p>
                 <div class="meeting-files">
