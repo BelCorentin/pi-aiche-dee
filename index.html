@@ -171,6 +171,36 @@
             margin-top: 0;
             color: #3498db;
         }
+
+        .archive-toggle {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .toggle-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .toggle-btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        #archived-meetings {
+            opacity: 0.9;
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+            border-top: 1px solid #eee;
+        }
     </style>
     <script>
         // This script will highlight the most recent upcoming Thursday
@@ -208,6 +238,22 @@
                 nextMeetingSection.scrollIntoView({ behavior: 'smooth' });
             }
         });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Archive toggle functionality
+            const toggleBtn = document.getElementById('toggle-archive');
+            const archivedSection = document.getElementById('archived-meetings');
+
+            toggleBtn.addEventListener('click', function () {
+                if (archivedSection.style.display === 'none') {
+                    archivedSection.style.display = 'block';
+                    toggleBtn.textContent = 'Hide Archived Meetings';
+                } else {
+                    archivedSection.style.display = 'none';
+                    toggleBtn.textContent = 'Show Archived Meetings';
+                }
+            });
+        });
     </script>
 </head>
 
@@ -230,18 +276,6 @@
         <div class="toc">
             <h3>Upcoming Meetings</h3>
             <ul class="toc-list">
-                <li class="toc-item" data-date="2025-02-27">
-                    <a href="#meeting-2025-02-27" class="toc-link">Thursday, February 27</a>
-                    <span class="toc-date">Weekly Meeting</span>
-                </li>
-                <li class="toc-item" data-date="2025-03-06">
-                    <a href="#meeting-2025-03-06" class="toc-link">Thursday, March 6</a>
-                    <span class="toc-date">Weekly Meeting</span>
-                </li>
-                <li class="toc-item" data-date="2025-03-13">
-                    <a href="#meeting-2025-03-13" class="toc-link">Thursday, March 13</a>
-                    <span class="toc-date">Weekly Meeting</span>
-                </li>
                 <li class="toc-item" data-date="2025-03-20">
                     <a href="#meeting-2025-03-20" class="toc-link">Thursday, March 20</a>
                     <span class="toc-date">Weekly Meeting</span>
@@ -250,105 +284,19 @@
                     <a href="#meeting-2025-03-27" class="toc-link">Thursday, March 27</a>
                     <span class="toc-date">Weekly Meeting</span>
                 </li>
+                <li class="toc-item" data-date="2025-04-03">
+                    <a href="#meeting-2025-04-03" class="toc-link">Thursday, April 3</a>
+                    <span class="toc-date">Weekly Meeting</span>
+                </li>
             </ul>
         </div>
 
-        <!-- <section>
-            <h2>Weekly meetings</h2>
+        <!-- Archived Meetings Toggle Button -->
+        <div class="archive-toggle">
+            <button id="toggle-archive" class="toggle-btn">Show Archived Meetings</button>
+        </div>
 
-            <div class="meeting-section">
-                <div class="meeting-date">Thursday, March 20, 2025</div>
-                <h3>Weekly Update</h3>
-                <p>This update includes the latest MEG analyses with 8 figures 
-                   from 1 subjects across 1 tasks. The report includes 
-                   preprocessing results, source localization, and statistical analyses.</p>
-                <div class="meeting-files">
-                    <h4>Files:</h4>
-                    <a href="files/week12_2025/mne_report_2025-03-20.html" class="file-link">MNE Analysis Report</a>
-                </div>
-            </div>
-    
-
-            <div class="meeting-section">
-                <div class="meeting-date">Thursday, March 20, 2025</div>
-                <h3>Weekly Update</h3>
-                <p>This update includes the latest MEG analyses with 7 figures 
-                   from 1 subjects across 1 tasks. The report includes 
-                   preprocessing results, source localization, and statistical analyses.</p>
-                <div class="meeting-files">
-                    <h4>Files:</h4>
-                    <a href="files/week12_2025/mne_report_2025-03-20.html" class="file-link">MNE Analysis Report</a>
-                </div>
-            </div>
-    
-            <div class="report-container">
-                <div class="report-card">
-                    <div class="report-title">Today, on the menu:</div>
-                    <div class="report-date">February 26, 2025</div>
-                    <p>Improving the next experiment's sentences, and discussing the results of the distraction / probe
-                        experiment.</p>
-                    </p>
-                    <a href="files/week9_2025/mne_report_2025-02-26.html" class="report-link">View Report</a>
-                </div>
-            </div>
-        </section> -->
-
-        <section id="meeting-2025-02-27">
-            <div class="meeting-date">Thursday, February 27, 2025</div>
-            <h3>Weekly Meeting</h3>
-            <div class="report-container">
-                <div class="report-card">
-                    <div class="report-title">MNE Report Figs</div>
-                    <p>Improving the next experiment's sentences, and discussing the results of the distraction / probe
-                        experiment.</p>
-                    <a href="files/week9_2025/mne_report_2025-02-26.html" class="report-link">View MNE Report</a>
-                </div>
-
-                <div class="report-card">
-                    <div class="report-title">Google Doc</div>
-                    <p>Discuss the different topics.</p>
-                    <a href="https://docs.google.com/document/d/1OLBO9XFTMLxPPT46QZsf8fOfIQIdM93glV2efNqbQA8/edit?tab=t.0"
-                        class="report-link">Go to Gdoc</a>
-                </div>
-            </div>
-        </section>
-
-        <section id="meeting-2025-03-06">
-            <div class="meeting-date">Thursday, March 6, 2025</div>
-            <h3>Methodology Discussion</h3>
-            <div class="report-container">
-                <div class="report-card">
-                    <div class="report-title">Methodology Draft</div>
-                    <p>Research methodology and data collection approaches.</p>
-                    <a href="files/week2/methodology_draft.pdf" class="report-link">View Document</a>
-                </div>
-
-                <div class="report-card">
-                    <div class="report-title">Literature Review Progress</div>
-                    <p>Summary of key findings from initial literature review.</p>
-                    <a href="files/week2/lit_review_progress.pdf" class="report-link">View Document</a>
-                </div>
-            </div>
-        </section>
-
-        <section id="meeting-2025-03-13">
-            <div class="meeting-date">Thursday, March 13, 2025</div>
-            <h3>Data Collection Planning</h3>
-            <div class="report-container">
-                <div class="report-card">
-                    <div class="report-title">Data Collection Plan</div>
-                    <p>Detailed protocol for experimental data collection.</p>
-                    <a href="files/week3/data_collection_plan.pdf" class="report-link">View Document</a>
-                </div>
-
-                <div class="report-card">
-                    <div class="report-title">Research Timeline</div>
-                    <p>Updated timeline with key milestones and deadlines.</p>
-                    <a href="files/week3/research_timeline.pdf" class="report-link">View Document</a>
-                </div>
-            </div>
-        </section>
-
+        <!-- Upcoming Meetings -->
         <section id="meeting-2025-03-20">
             <div class="meeting-date">Thursday, March 20, 2025</div>
             <h3>Preliminary Results Review</h3>
@@ -359,9 +307,10 @@
                     <a href="files/week12_2025/mne_report_2025-03-20.html" class="report-link">View MNE Report</a>
                 </div>
                 <div class="report-card">
-                    <div class="report-title">Meeting Notes</div>
-                    <p>Discussion points and action items from the weekly meeting.</p>
-                    <a href="#" class="report-link">Coming Soon</a>
+                    <div class="report-title">Google Doc</div>
+                    <p>Discuss the different topics and research progress.</p>
+                    <a href="https://docs.google.com/document/d/1OLBO9XFTMLxPPT46QZsf8fOfIQIdM93glV2efNqbQA8/edit?tab=t.0"
+                        class="report-link">Go to Gdoc</a>
                 </div>
             </div>
         </section>
@@ -369,11 +318,100 @@
         <section id="meeting-2025-03-27">
             <div class="meeting-date">Thursday, March 27, 2025</div>
             <h3>Analysis Techniques</h3>
-            <p class="report-card">Meeting documents will be added after the meeting.</p>
+            <div class="report-container">
+                <div class="report-card">
+                    <div class="report-title">MEG Weekly Analysis</div>
+                    <p>Latest MEG/EEG analysis results with figures from the past week.</p>
+                    <a href="files/week12_2025/mne_report_2025-03-20.html" class="report-link">View MNE Report</a>
+                </div>
+                <div class="report-card">
+                    <div class="report-title">Google Doc</div>
+                    <p>Discuss the different topics and research progress.</p>
+                    <a href="https://docs.google.com/document/d/1OLBO9XFTMLxPPT46QZsf8fOfIQIdM93glV2efNqbQA8/edit?tab=t.0"
+                        class="report-link">Go to Gdoc</a>
+                </div>
+            </div>
         </section>
 
+        <section id="meeting-2025-04-03">
+            <div class="meeting-date">Thursday, April 3, 2025</div>
+            <h3>Future Directions</h3>
+            <div class="report-container">
+                <div class="report-card">
+                    <div class="report-title">MEG Weekly Analysis</div>
+                    <p>Latest MEG/EEG analysis results with figures from the past week.</p>
+                    <a href="files/week12_2025/mne_report_2025-03-20.html" class="report-link">View MNE Report</a>
+                </div>
+                <div class="report-card">
+                    <div class="report-title">Google Doc</div>
+                    <p>Discuss the different topics and research progress.</p>
+                    <a href="https://docs.google.com/document/d/1OLBO9XFTMLxPPT46QZsf8fOfIQIdM93glV2efNqbQA8/edit?tab=t.0"
+                        class="report-link">Go to Gdoc</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Archived Meetings (Hidden by Default) -->
+        <div id="archived-meetings" style="display: none;">
+            <h2>Archived Meetings</h2>
+
+            <section id="meeting-2025-03-13">
+                <div class="meeting-date">Thursday, March 13, 2025</div>
+                <h3>Data Collection Planning</h3>
+                <div class="report-container">
+                    <div class="report-card">
+                        <div class="report-title">Data Collection Plan</div>
+                        <p>Detailed protocol for experimental data collection.</p>
+                        <a href="files/week3/data_collection_plan.pdf" class="report-link">View Document</a>
+                    </div>
+                    <div class="report-card">
+                        <div class="report-title">Research Timeline</div>
+                        <p>Updated timeline with key milestones and deadlines.</p>
+                        <a href="files/week3/research_timeline.pdf" class="report-link">View Document</a>
+                    </div>
+                </div>
+            </section>
+
+            <section id="meeting-2025-03-06">
+                <div class="meeting-date">Thursday, March 6, 2025</div>
+                <h3>Methodology Discussion</h3>
+                <div class="report-container">
+                    <div class="report-card">
+                        <div class="report-title">Methodology Draft</div>
+                        <p>Research methodology and data collection approaches.</p>
+                        <a href="files/week2/methodology_draft.pdf" class="report-link">View Document</a>
+                    </div>
+                    <div class="report-card">
+                        <div class="report-title">Literature Review Progress</div>
+                        <p>Summary of key findings from initial literature review.</p>
+                        <a href="files/week2/lit_review_progress.pdf" class="report-link">View Document</a>
+                    </div>
+                </div>
+            </section>
+
+            <section id="meeting-2025-02-27">
+                <div class="meeting-date">Thursday, February 27, 2025</div>
+                <h3>Weekly Meeting</h3>
+                <div class="report-container">
+                    <div class="report-card">
+                        <div class="report-title">MNE Report Figs</div>
+                        <p>Improving the next experiment's sentences, and discussing the results of the distraction /
+                            probe
+                            experiment.</p>
+                        <a href="files/week9_2025/mne_report_2025-02-26.html" class="report-link">View MNE Report</a>
+                    </div>
+                    <div class="report-card">
+                        <div class="report-title">Google Doc</div>
+                        <p>Discuss the different topics.</p>
+                        <a href="https://docs.google.com/document/d/1OLBO9XFTMLxPPT46QZsf8fOfIQIdM93glV2efNqbQA8/edit?tab=t.0"
+                            class="report-link">Go to Gdoc</a>
+                    </div>
+                </div>
+            </section>
+        </div>
+
         <footer>
-            <p>Last updated: February 2025</p>
+            <p>Last updated: March 2025</p>
         </footer>
     </div>
 </body>

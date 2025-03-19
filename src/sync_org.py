@@ -101,9 +101,10 @@ def update_metadata_db(new_file_metadata):
         logger.error(f"Error updating metadata database: {str(e)}")
         return {}
 
-def is_recent_file(file_path, days=7):
+def is_recent_file(file_path, days=7, metadata_db=None):
     """
-    Check if a file was created or modified within the specified number of days
+    Check if a file is recent based on metadata timestamp or creation date,
+    not file system modification time which gets updated when files are synced
     
     Parameters:
     -----------
@@ -111,6 +112,8 @@ def is_recent_file(file_path, days=7):
         Path to the file
     days : int
         Number of days to consider a file as recent
+    metadata_db : dict
+        Metadata database containing file information
         
     Returns:
     --------
@@ -118,7 +121,36 @@ def is_recent_file(file_path, days=7):
         True if the file is recent, False otherwise
     """
     try:
-        # Get file's modification time
+        # Get filename from path
+        filename = os.path.basename(file_path)
+        
+        # If we have metadata for this file, use it
+        if metadata_db and filename in metadata_db:
+            meta = metadata_db[filename]
+            
+            # First try to use the timestamp field if available
+            if 'timestamp' in meta:
+                # Parse timestamp in format YYYYMMDDTHHMMSS
+                try:
+                    timestamp_str = meta['timestamp']
+                    timestamp_date = datetime.strptime(timestamp_str, '%Y%m%dT%H%M%S')
+                    cutoff_date = datetime.now() - timedelta(days=days)
+                    return timestamp_date >= cutoff_date
+                except (ValueError, TypeError):
+                    # If timestamp parsing fails, continue to other methods
+                    pass
+            
+            # Then try the added_date field
+            if 'added_date' in meta:
+                try:
+                    added_date = datetime.strptime(meta['added_date'], '%Y-%m-%d %H:%M:%S')
+                    cutoff_date = datetime.now() - timedelta(days=days)
+                    return added_date >= cutoff_date
+                except (ValueError, TypeError):
+                    # If parsing fails, continue to file system date
+                    pass
+        
+        # As a fallback, use file's modification time
         file_mtime = os.path.getmtime(file_path)
         file_date = datetime.fromtimestamp(file_mtime)
         
@@ -161,9 +193,24 @@ def organize_figures(days_threshold=7):
         all_png_files = glob.glob(os.path.join(LOCAL_FIG_PATH, "*.png"))
         logger.info(f"Found {len(all_png_files)} PNG files to organize")
         
+        # Load metadata database to check file dates
+        metadata_db = {}
+        if os.path.exists(METADATA_FILE):
+            try:
+                with open(METADATA_FILE, 'r') as f:
+                    metadata_db = json.load(f)
+                logger.info(f"Loaded metadata for {len(metadata_db)} files")
+            except Exception as e:
+                logger.error(f"Error loading metadata file: {str(e)}")
+        
         # Filter to only include recent files
-        recent_png_files = [f for f in all_png_files if is_recent_file(f, days_threshold)]
+        recent_png_files = [f for f in all_png_files if is_recent_file(f, days_threshold, metadata_db)]
         logger.info(f"Filtered to {len(recent_png_files)} recent files (within {days_threshold} days)")
+        
+        # If no recent files found using strict filtering, include all files from this sync
+        if len(recent_png_files) == 0 and len(all_png_files) > 0:
+            logger.warning("No recent files found with metadata dating. Including all files from current sync.")
+            recent_png_files = all_png_files
         
         # Track metadata for all files
         all_metadata = []
