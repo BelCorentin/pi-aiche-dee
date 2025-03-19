@@ -96,14 +96,17 @@ def get_experiment_description(experiment_name):
     # Default description for unrecognized experiments
     return descriptions.get(experiment_name.lower(), "MEG Weekly Analysis MNE Report.")
 
-def generate_mne_report():
+def generate_mne_report(custom_date=None):
     """Generate an MNE report from the organized figures with improved organization and layout"""
     try:
         # Create a new report
         report = mne.Report(title='MEG Weekly Analysis MNE Report')
         
-        # Get current date for report naming
-        current_date = datetime.now().strftime("%Y-%m-%d")
+        # Get current date for report naming, or use custom date if provided
+        if custom_date:
+            current_date = custom_date.strftime("%Y-%m-%d")
+        else:
+            current_date = datetime.now().strftime("%Y-%m-%d")
         
         # Read metadata database
         metadata_db = read_metadata()

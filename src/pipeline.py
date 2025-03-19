@@ -12,7 +12,7 @@ import time
 from sync_org import sync_figures_from_cluster, organize_figures, logger
 from gen_report import generate_mne_report, update_github_website, send_email_notification
 
-def run_pipeline():
+def run_pipeline(custom_date=None):
     """Run the complete MNE report pipeline"""
     start_time = time.time()
     success = True
@@ -41,7 +41,7 @@ def run_pipeline():
         
         # Step 2: Generate MNE report
         logger.info("\n=== Step 2: Generating MNE report ===")
-        report_path, date = generate_mne_report()
+        report_path, date = generate_mne_report(custom_date)
         if not report_path:
             logger.error("Report generation failed, aborting pipeline")
             return False
@@ -110,9 +110,19 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='MNE Report Pipeline')
     parser.add_argument('--setup-cron', action='store_true', help='Setup a cron job to run this pipeline daily')
     parser.add_argument('--force', action='store_true', help='Force run even if no new figures')
+    parser.add_argument('--date', type=str, help='Custom date for the report in YYYY-MM-DD format')
     args = parser.parse_args()
     
     if args.setup_cron:
         setup_cron_job()
     else:
-        run_pipeline()
+        # Convert date string to date object if provided
+        custom_date = None
+        if args.date:
+            try:
+                custom_date = datetime.strptime(args.date, '%Y-%m-%d').date()
+                logger.info(f"Using custom date: {custom_date}")
+            except ValueError:
+                logger.error(f"Invalid date format: {args.date}. Using current date.")
+        
+        run_pipeline(custom_date)
