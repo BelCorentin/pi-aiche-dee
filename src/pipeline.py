@@ -12,7 +12,7 @@ import time
 from sync_org import sync_figures_from_cluster, organize_figures, logger
 from gen_report import generate_mne_report, update_github_website, send_email_notification
 
-def run_pipeline(custom_date=None):
+def run_pipeline(custom_date=None, days_threshold=7):
     """Run the complete MNE report pipeline"""
     start_time = time.time()
     success = True
@@ -30,7 +30,7 @@ def run_pipeline(custom_date=None):
             )
             return False
         
-        if not organize_figures():
+        if not organize_figures(days_threshold):
             logger.error("Figure organization failed, aborting pipeline")
             send_email_notification(
                 subject="MNE Pipeline Failed at Organization Step",
@@ -111,6 +111,7 @@ if __name__ == "__main__":
     parser.add_argument('--setup-cron', action='store_true', help='Setup a cron job to run this pipeline daily')
     parser.add_argument('--force', action='store_true', help='Force run even if no new figures')
     parser.add_argument('--date', type=str, help='Custom date for the report in YYYY-MM-DD format')
+    parser.add_argument('--days', type=int, default=7, help='Number of days to consider files as recent (default: 7)')
     args = parser.parse_args()
     
     if args.setup_cron:
@@ -125,4 +126,5 @@ if __name__ == "__main__":
             except ValueError:
                 logger.error(f"Invalid date format: {args.date}. Using current date.")
         
-        run_pipeline(custom_date)
+        logger.info(f"Considering files from the last {args.days} days as recent")
+        run_pipeline(custom_date, args.days)

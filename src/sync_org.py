@@ -3,7 +3,7 @@ import os
 import subprocess
 import re
 import shutil
-from datetime import datetime
+from datetime import datetime, timedelta
 import glob
 import logging
 import json
@@ -101,7 +101,38 @@ def update_metadata_db(new_file_metadata):
         logger.error(f"Error updating metadata database: {str(e)}")
         return {}
 
-def organize_figures():
+def is_recent_file(file_path, days=7):
+    """
+    Check if a file was created or modified within the specified number of days
+    
+    Parameters:
+    -----------
+    file_path : str
+        Path to the file
+    days : int
+        Number of days to consider a file as recent
+        
+    Returns:
+    --------
+    bool
+        True if the file is recent, False otherwise
+    """
+    try:
+        # Get file's modification time
+        file_mtime = os.path.getmtime(file_path)
+        file_date = datetime.fromtimestamp(file_mtime)
+        
+        # Calculate the cutoff date
+        cutoff_date = datetime.now() - timedelta(days=days)
+        
+        # Return True if file is newer than cutoff date
+        return file_date >= cutoff_date
+    except Exception as e:
+        logger.error(f"Error checking if file is recent: {str(e)}")
+        # If there's an error, return True to include the file by default
+        return True
+
+def organize_figures(days_threshold=7):
     """Organize figures into categories based on filename patterns and metadata"""
     try:
         # Primary categories based on analysis type
@@ -130,11 +161,15 @@ def organize_figures():
         all_png_files = glob.glob(os.path.join(LOCAL_FIG_PATH, "*.png"))
         logger.info(f"Found {len(all_png_files)} PNG files to organize")
         
+        # Filter to only include recent files
+        recent_png_files = [f for f in all_png_files if is_recent_file(f, days_threshold)]
+        logger.info(f"Filtered to {len(recent_png_files)} recent files (within {days_threshold} days)")
+        
         # Track metadata for all files
         all_metadata = []
         
         # Categorize files
-        for file in all_png_files:
+        for file in recent_png_files:
             filename = os.path.basename(file)
             metadata = extract_metadata(filename)
             all_metadata.append(metadata)
