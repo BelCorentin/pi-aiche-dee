@@ -518,36 +518,35 @@ def update_index_html(report_filename, week_dir, date_str):
         subjects = set(meta.get('subject', 'unknown') for meta in metadata_db.values())
         tasks = set(meta.get('task', 'unknown') for meta in metadata_db.values())
         
-        # Create a new meeting section
-        new_section = f'''
-            <div class="meeting-section">
-                <div class="meeting-date">{formatted_date}</div>
-                <h3>Weekly Update</h3>
-                <p>This update includes the latest MEG analyses with {total_figures} figures 
-                   from {len(subjects)} subjects across {len(tasks)} tasks. The report includes 
-                   preprocessing results, source localization, and statistical analyses.</p>
-                <div class="meeting-files">
-                    <h4>Files:</h4>
-                    <a href="files/{week_dir}/{report_filename}" class="file-link">MNE Analysis Report</a>
-                </div>
-            </div>
-    '''
+        # Create a section ID for the meeting date
+        meeting_id = f"meeting-{date_str}"
         
-        # Insert the new section after the h2 Weekly meetings tag
-        if '<h2>Weekly meetings</h2>' in content:
-            updated_content = content.replace(
-                '<h2>Weekly meetings</h2>', 
-                '<h2>Weekly meetings</h2>\n' + new_section
-            )
+        # Check if this meeting section already exists in the page
+        if meeting_id in content:
+            # If section exists, update the MNE report link
+            logger.info(f"Found existing meeting section for {date_str}, updating report link")
             
+            # Find the report link and update it
+            report_link_pattern = f'<a href="files/[^"]+" class="report-link">View MNE Report</a>'
+            new_report_link = f'<a href="files/{week_dir}/{report_filename}" class="report-link">View MNE Report</a>'
+            
+            # Use regular expression to replace the link
+            import re
+            updated_content = re.sub(report_link_pattern, new_report_link, content)
+            
+            # Write the updated content back to the file
             with open(index_path, 'w') as file:
                 file.write(updated_content)
             
-            logger.info(f"Updated index.html with new report link")
+            logger.info(f"Updated index.html with new report link for {date_str}")
             return True
+        
         else:
-            logger.warning("Could not find the Weekly Meetings section in index.html")
-            return False
+            # If section doesn't exist, this is an old meeting that should be archived
+            logger.warning(f"Could not find meeting section for {date_str} in index.html")
+            
+            # Instead of failing, we'll just log the warning and continue
+            return True
     except Exception as e:
         logger.error(f"Error updating index.html: {str(e)}")
         return False
