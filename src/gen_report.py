@@ -130,43 +130,80 @@ def get_experiment_description(experiment_name):
     return descriptions.get(experiment_name.lower(), default_desc)
 
 def extract_main_component(filename):
-    """Extract the first meaningful component from a filename (e.g., 'probe' from 'probe_sub_task.png')"""
-    # Remove file extension
+    """
+    Extract the first substring from a filename as the main component
+    (e.g., 'probe' from 'probe_spacy_to_probe.png')
+    """
+    # Remove file extension and split by underscore
     base_name = os.path.splitext(filename)[0]
-    
-    # Split by underscore
     parts = base_name.split('_')
     
-    # Try to identify a meaningful component
-    for part in parts:
-        # Skip very short or numeric parts
-        if len(part) < 3 or part.isdigit():
-            continue
-            
-        # Skip common prefixes that don't indicate experiment type
-        if part.lower() in ['sub', 'task', 'run', 'ses', 'cond', 'img', 'fig']:
-            continue
-            
-        # Return the first meaningful part
-        return part.lower()
-        
-    # If no meaningful part is found, return the first part
-    return parts[0].lower() if parts else "unknown"
+    # Get the first part as the main component
+    if parts and len(parts) > 0:
+        return parts[0].lower()
+    else:
+        return "unknown"
 
-def group_figures_by_main_component(figures, metadata_db):
-    """Group figures by their first meaningful component"""
-    grouped = {}
+def parse_remaining_components(filename, main_component):
+    """
+    Parse the remaining parts of the filename after the main component
+    to create subcategories
+    """
+    # Remove file extension and split by underscore
+    base_name = os.path.splitext(filename)[0]
+    parts = base_name.split('_')
+    
+    # Skip the first part (main component)
+    remaining_parts = parts[1:] if len(parts) > 1 else []
+    
+    # Filter out very short parts or common non-descriptive terms
+    filtered_parts = []
+    common_terms = ['sub', 'ses', 'run', 'img', 'fig', 'the', 'and', 'for', 'to']
+    
+    for part in remaining_parts:
+        if len(part) >= 3 and not part.isdigit() and part.lower() not in common_terms:
+            filtered_parts.append(part.lower())
+    
+    return filtered_parts
+
+def group_figures_hierarchically(figures, metadata_db):
+    """
+    Group figures hierarchically - first by main component, then by subcategories
+    derived from remaining filename parts
+    """
+    main_categories = {}
     
     for fig_path in figures:
         filename = os.path.basename(fig_path)
+        
+        # Get main component (first substring)
         main_component = extract_main_component(filename)
         
-        if main_component not in grouped:
-            grouped[main_component] = []
+        # Create main category if it doesn't exist
+        if main_component not in main_categories:
+            main_categories[main_component] = {'figures': [], 'subcategories': {}}
+        
+        # Add to the main category's figure list
+        main_categories[main_component]['figures'].append(
+            (fig_path, filename, metadata_db.get(filename, {}))
+        )
+        
+        # Extract subcategories from remaining parts of the filename
+        subcategories = parse_remaining_components(filename, main_component)
+        
+        # If we have subcategories, add to respective subcategory
+        if subcategories:
+            # Use the first subcategory as the grouping key
+            subcat_key = subcategories[0]
             
-        grouped[main_component].append((fig_path, filename, metadata_db.get(filename, {})))
+            if subcat_key not in main_categories[main_component]['subcategories']:
+                main_categories[main_component]['subcategories'][subcat_key] = []
+            
+            main_categories[main_component]['subcategories'][subcat_key].append(
+                (fig_path, filename, metadata_db.get(filename, {}))
+            )
     
-    return grouped
+    return main_categories
 
 def generate_mne_report(custom_date=None):
     """Generate an MNE report from the organized figures with improved organization and layout"""
@@ -382,6 +419,24 @@ def generate_mne_report(custom_date=None):
                 font-size: 14px;
                 line-height: 1.6;
             }
+            
+            .subcategory-container {
+                margin: 15px 0 30px 0;
+                padding: 15px;
+                background-color: #f8f9fa;
+                border-radius: 6px;
+                border-left: 3px solid #bbdefb;
+            }
+            
+            .subcategory-heading {
+                font-size: 1.2em;
+                color: #1976d2;
+                margin-bottom: 15px;
+            }
+            
+            .no-subcategory-container {
+                margin-top: 20px;
+            }
         </style>
         """
         
@@ -398,18 +453,18 @@ def generate_mne_report(custom_date=None):
         # Get unique subjects and tasks
         subjects = set()
         tasks = set()
-        experiments = set()
+        main_components = set()
         for meta in metadata_db.values():
             if 'subject' in meta:
                 subjects.add(meta['subject'])
             if 'task' in meta:
                 tasks.add(meta['task'])
             
-            # Try to extract experiment type from filename
+            # Extract main component from filename
             if 'filename' in meta:
                 main_component = extract_main_component(meta['filename'])
                 if main_component and main_component != 'unknown':
-                    experiments.add(main_component)
+                    main_components.add(main_component)
         
         # Add overview section
         overview_html = f"""
@@ -423,31 +478,31 @@ def generate_mne_report(custom_date=None):
                 <span class="figure-stat">{total_figures} figures</span>
                 <span class="figure-stat">{len(subjects)} subjects</span>
                 <span class="figure-stat">{len(tasks)} tasks</span>
-                <span class="figure-stat">{len(experiments)} experiment types</span>
+                <span class="figure-stat">{len(main_components)} experiment types</span>
             </div>
         </div>
         """
         report.add_html(overview_html, title="Overview")
         
-        # Create collection of all figures across categories for experiment-based grouping
+        # Create collection of all figures across categories
         all_figures = []
         for category in category_dirs:
             category_path = os.path.join(LOCAL_FIG_PATH, category)
             figures = glob.glob(os.path.join(category_path, "**/*.png"), recursive=True)
             all_figures.extend(figures)
         
-        # Group all figures by their main component (experiment type)
-        experiment_groups = group_figures_by_main_component(all_figures, metadata_db)
+        # Group all figures hierarchically
+        hierarchical_groups = group_figures_hierarchically(all_figures, metadata_db)
         
-        # Create table of contents based on experiments
+        # Create table of contents based on main components
         toc_items = []
-        for exp_name in sorted(experiment_groups.keys()):
-            if exp_name != 'unknown':  # Skip unknown category in TOC
-                display_name = exp_name.capitalize()
-                toc_items.append(f'<li><a href="#{exp_name.lower()}">{display_name}</a></li>')
+        for main_component in sorted(hierarchical_groups.keys()):
+            if main_component != 'unknown':  # Skip unknown category in TOC
+                display_name = main_component.capitalize()
+                toc_items.append(f'<li><a href="#{main_component.lower()}">{display_name}</a></li>')
         
         # Add "Other" category to TOC if we have unknown items
-        if 'unknown' in experiment_groups:
+        if 'unknown' in hierarchical_groups:
             toc_items.append('<li><a href="#unknown">Other Figures</a></li>')
         
         # Add table of contents
@@ -461,68 +516,99 @@ def generate_mne_report(custom_date=None):
         """
         report.add_html(toc_html, title="Table of Contents")
         
-        # Process each experiment group
-        for exp_name, figures in sorted(experiment_groups.items()):
+        # Process each main component group
+        for main_component, group_data in sorted(hierarchical_groups.items()):
+            figures = group_data['figures']
+            subcategories = group_data['subcategories']
+            
             if not figures:  # Skip empty groups
                 continue
                 
-            # Get experiment description
-            exp_description = get_experiment_description(exp_name)
-            exp_title = exp_name.capitalize()
+            # Get main component description (experiment description)
+            main_desc = get_experiment_description(main_component)
+            main_title = main_component.capitalize()
             
-            # Add experiment section header with anchor
-            exp_html = f"""
-            <div id="{exp_name.lower()}" class="experiment-container">
-                <h2 class="experiment-heading">{exp_title}</h2>
+            # Add main component section header with anchor
+            main_html = f"""
+            <div id="{main_component.lower()}" class="experiment-container">
+                <h2 class="experiment-heading">{main_title}</h2>
                 
                 <div class="experiment-description">
-                    {exp_description.get('short', '')}
+                    {main_desc.get('short', '')}
                 </div>
                 
                 <div class="experiment-full-description">
-                    {exp_description.get('full', '')}
+                    {main_desc.get('full', '')}
                 </div>
                 
                 <p><strong>Figures:</strong> {len(figures)}</p>
             </div>
             """
-            report.add_html(exp_html, title=exp_title)
+            report.add_html(main_html, title=main_title)
             
-            # Further group figures by subdirectory or task
-            sub_groups = {}
+            # Add figures by subcategory
+            if subcategories:
+                for subcat_key, subcat_figures in sorted(subcategories.items()):
+                    # Create readable subcategory title
+                    subcat_title = subcat_key.replace('_', ' ').title()
+                    
+                    # Add subcategory container
+                    subcat_html = f"""
+                    <div class="subcategory-container">
+                        <h3 class="subcategory-heading">{subcat_title}</h3>
+                    </div>
+                    """
+                    report.add_html(subcat_html, title=f"{main_title} - {subcat_title}")
+                    
+                    # Add figures for this subcategory
+                    for fig_path, filename, meta in subcat_figures:
+                        # Create a descriptive title by removing main component and current subcategory
+                        parts = os.path.splitext(filename)[0].split('_')
+                        filtered_parts = [p for p in parts 
+                                        if p.lower() != main_component.lower() 
+                                        and p.lower() != subcat_key.lower()]
+                        
+                        if filtered_parts:
+                            fig_title = ' '.join(word.capitalize() for word in filtered_parts)
+                        else:
+                            fig_title = filename
+                        
+                        # Add the figure
+                        report.add_image(
+                            image=fig_path,
+                            title=fig_title,
+                            caption=generate_caption(meta)
+                        )
+            
+            # Add figures that weren't categorized into subcategories
+            uncategorized_figures = []
             for fig_path, filename, meta in figures:
-                # Try to group by task first if available in metadata
-                if meta and 'task' in meta:
-                    group_key = f"task_{meta['task']}"
-                else:
-                    # Otherwise fall back to directory structure
-                    dir_path = os.path.dirname(fig_path)
-                    group_key = os.path.basename(dir_path)
-                    
-                if not group_key or group_key == '.':
-                    group_key = 'general'
-                    
-                if group_key not in sub_groups:
-                    sub_groups[group_key] = []
-                    
-                sub_groups[group_key].append((fig_path, filename, meta))
+                # Check if this figure is already in a subcategory
+                in_subcategory = False
+                for subcat_figures in subcategories.values():
+                    if any(f[1] == filename for f in subcat_figures):
+                        in_subcategory = True
+                        break
+                
+                if not in_subcategory:
+                    uncategorized_figures.append((fig_path, filename, meta))
             
-            # Process each subgroup
-            for group_key, group_figures in sorted(sub_groups.items()):
-                # Create readable subgroup title
-                group_title = group_key.replace('_', ' ').title()
+            # Add uncategorized figures section if there are any
+            if uncategorized_figures:
+                report.add_html(
+                    '<div class="no-subcategory-container"><h3>General</h3></div>',
+                    title=f"{main_title} - General"
+                )
                 
-                if group_key != 'general':
-                    # Add subheading for the group
-                    report.add_html(f"<h3>{group_title}</h3>", title=f"{exp_title} - {group_title}")
-                
-                # Add figures for this subgroup
-                for fig_path, filename, meta in group_figures:
-                    # Create a more descriptive title from the filename
+                for fig_path, filename, meta in uncategorized_figures:
+                    # Create a descriptive title by removing main component
                     parts = os.path.splitext(filename)[0].split('_')
-                    fig_title = ' '.join(word.capitalize() for word in parts if word.lower() != exp_name.lower())
+                    filtered_parts = [p for p in parts 
+                                     if p.lower() != main_component.lower()]
                     
-                    if not fig_title.strip():
+                    if filtered_parts:
+                        fig_title = ' '.join(word.capitalize() for word in filtered_parts)
+                    else:
                         fig_title = filename
                     
                     # Add the figure
