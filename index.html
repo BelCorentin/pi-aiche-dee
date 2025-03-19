@@ -411,9 +411,21 @@
         </div>
 
         <footer>
-            <p>Last updated: March 2025</p>
+            <p>Last updated: <span id="current-date">March 2025</span></p>
         </footer>
     </div>
+
+    <script>
+        // Set the current date in the footer
+        document.addEventListener('DOMContentLoaded', function () {
+            const monthNames = ["January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+            ];
+            const today = new Date();
+            document.getElementById('current-date').textContent =
+                `${monthNames[today.getMonth()]} ${today.getFullYear()}`;
+        });
+    </script>
 </body>
 
 </html>

@@ -1,0 +1,3 @@
+- Improve the fetcher: get in the google docs whatever ideas we had and create a little summary of each meeting?
+    - Or simply copy paste the text of the weekly meeting somewhere and it generates a summary?
+
