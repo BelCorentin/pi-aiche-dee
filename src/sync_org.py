@@ -37,15 +37,67 @@ METADATA_PATTERNS = {
     'timestamp': r'([0-9]{8}T[0-9]{6})'
 }
 
+def clean_local_figures():
+    """
+    Clean up local figures directory before syncing new files.
+    This preserves the metadata file but removes all other files and directories.
+    """
+    try:
+        logger.info("Cleaning up local figures directory...")
+        
+        # Check if the directory exists
+        if not os.path.exists(LOCAL_FIG_PATH):
+            os.makedirs(LOCAL_FIG_PATH, exist_ok=True)
+            logger.info("Created local figures directory")
+            return True
+            
+        # Backup the metadata file if it exists
+        metadata_backup = None
+        if os.path.exists(METADATA_FILE):
+            with open(METADATA_FILE, 'r') as f:
+                metadata_backup = f.read()
+            logger.info("Backed up metadata file")
+        
+        # Remove all files and subdirectories in the local figure path
+        for item in os.listdir(LOCAL_FIG_PATH):
+            item_path = os.path.join(LOCAL_FIG_PATH, item)
+            
+            if os.path.isdir(item_path):
+                shutil.rmtree(item_path)
+            else:
+                # Skip the metadata file itself as we've already backed it up
+                if item_path != METADATA_FILE:
+                    os.remove(item_path)
+        
+        logger.info("Cleaned up local figures directory")
+        
+        # Restore the metadata file if it was backed up
+        if metadata_backup:
+            with open(METADATA_FILE, 'w') as f:
+                f.write(metadata_backup)
+            logger.info("Restored metadata file")
+            
+        return True
+    except Exception as e:
+        logger.error(f"Error cleaning local figures directory: {str(e)}")
+        return False
+
 def sync_figures_from_cluster():
     """Sync figures from the cluster to local machine"""
     try:
+        # First clean up the local directory
+        if not clean_local_figures():
+            logger.warning("Failed to clean local directory, but continuing with sync...")
+        
         os.makedirs(LOCAL_FIG_PATH, exist_ok=True)
         
         rsync_command = [
-            "rsync", "-vr", "--progress", "--ignore-existing",
+            "rsync", "-vr", "--progress",
             f"cbel@frontex:{REMOTE_FIG_PATH}", LOCAL_FIG_PATH
         ]
+        
+        # Remove the --ignore-existing flag to allow overwriting existing files
+        # since we've already cleaned the directory
         
         logger.info("Syncing figures from cluster...")
         result = subprocess.run(rsync_command, capture_output=True, text=True)
@@ -54,7 +106,7 @@ def sync_figures_from_cluster():
             logger.info("Sync complete!")
             # Log number of new files
             new_files = [line for line in result.stdout.split('\n') if line.endswith('.png')]
-            logger.info(f"Synced {len(new_files)} new figure(s)")
+            logger.info(f"Synced {len(new_files)} figure(s)")
             return True
         else:
             logger.error(f"Sync failed with error: {result.stderr}")

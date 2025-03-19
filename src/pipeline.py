@@ -1,22 +1,28 @@
 #!/usr/bin/env python3
 import os
-import sys
 import subprocess
 from datetime import datetime
 import argparse
-import logging
 import traceback
 import time
 
 # Import the functions from the previous scripts
-from sync_org import sync_figures_from_cluster, organize_figures, logger
-from gen_report import generate_mne_report, update_github_website, send_email_notification
+from sync_org import (
+    sync_figures_from_cluster, organize_figures, logger
+)
+from gen_report import (
+    generate_mne_report, update_github_website, send_email_notification
+)
+
 
 def run_pipeline(custom_date=None, days_threshold=7):
     """Run the complete MNE report pipeline"""
     start_time = time.time()
     success = True
-    logger.info(f"Starting MNE report pipeline at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    logger.info(
+        f"Starting MNE report pipeline at "
+        f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+    )
     
     try:
         # Step 1: Sync and organize figures
@@ -25,7 +31,8 @@ def run_pipeline(custom_date=None, days_threshold=7):
             logger.error("Figure sync failed, aborting pipeline")
             send_email_notification(
                 subject="MNE Pipeline Failed at Sync Step",
-                body="The pipeline failed during the figure sync step. Please check the logs for details.",
+                body="The pipeline failed during the figure sync step. "
+                     "Please check the logs for details.",
                 success=False
             )
             return False
@@ -34,7 +41,8 @@ def run_pipeline(custom_date=None, days_threshold=7):
             logger.error("Figure organization failed, aborting pipeline")
             send_email_notification(
                 subject="MNE Pipeline Failed at Organization Step",
-                body="The pipeline failed during the figure organization step. Please check the logs for details.",
+                body="The pipeline failed during the figure organization step. "
+                     "Please check the logs for details.",
                 success=False
             )
             return False
@@ -58,7 +66,8 @@ def run_pipeline(custom_date=None, days_threshold=7):
         logger.error(traceback.format_exc())
         send_email_notification(
             subject="MNE Pipeline Failed with Unhandled Error",
-            body=f"The pipeline encountered an unhandled error: {str(e)}\n\n{traceback.format_exc()}",
+            body=f"The pipeline encountered an unhandled error: {str(e)}\n\n"
+                 f"{traceback.format_exc()}",
             success=False
         )
     
@@ -66,13 +75,18 @@ def run_pipeline(custom_date=None, days_threshold=7):
     execution_time = time.time() - start_time
     
     if success:
-        logger.info(f"\nPipeline completed successfully in {execution_time:.2f} seconds")
+        logger.info(
+            f"\nPipeline completed successfully in {execution_time:.2f} seconds"
+        )
         logger.info(f"Report available at: {report_path}")
-        logger.info(f"GitHub website updated with the new report")
+        logger.info("GitHub website updated with the new report")
     else:
-        logger.error(f"\nPipeline completed with errors in {execution_time:.2f} seconds")
+        logger.error(
+            f"\nPipeline completed with errors in {execution_time:.2f} seconds"
+        )
     
     return success
+
 
 def setup_cron_job():
     """Set up a cron job to run this pipeline automatically"""
@@ -81,7 +95,9 @@ def setup_cron_job():
         script_path = os.path.abspath(__file__)
         
         # Check if cron job already exists
-        current_crontab = subprocess.check_output(['crontab', '-l'], text=True, stderr=subprocess.DEVNULL)
+        current_crontab = subprocess.check_output(
+            ['crontab', '-l'], text=True, stderr=subprocess.DEVNULL
+        )
         if script_path in current_crontab:
             logger.info("Cron job already exists for this script")
             return True
@@ -105,13 +121,26 @@ def setup_cron_job():
         logger.error(f"Failed to set up cron job: {str(e)}")
         return False
 
+
 if __name__ == "__main__":
     # Parse command line arguments
     parser = argparse.ArgumentParser(description='MNE Report Pipeline')
-    parser.add_argument('--setup-cron', action='store_true', help='Setup a cron job to run this pipeline daily')
-    parser.add_argument('--force', action='store_true', help='Force run even if no new figures')
-    parser.add_argument('--date', type=str, help='Custom date for the report in YYYY-MM-DD format')
-    parser.add_argument('--days', type=int, default=7, help='Number of days to consider files as recent (default: 7)')
+    parser.add_argument(
+        '--setup-cron', action='store_true',
+        help='Setup a cron job to run this pipeline daily'
+    )
+    parser.add_argument(
+        '--force', action='store_true',
+        help='Force run even if no new figures'
+    )
+    parser.add_argument(
+        '--date', type=str,
+        help='Custom date for the report in YYYY-MM-DD format'
+    )
+    parser.add_argument(
+        '--days', type=int, default=7,
+        help='Number of days to consider files as recent (default: 7)'
+    )
     args = parser.parse_args()
     
     if args.setup_cron:
@@ -124,7 +153,11 @@ if __name__ == "__main__":
                 custom_date = datetime.strptime(args.date, '%Y-%m-%d').date()
                 logger.info(f"Using custom date: {custom_date}")
             except ValueError:
-                logger.error(f"Invalid date format: {args.date}. Using current date.")
+                logger.error(
+                    f"Invalid date format: {args.date}. Using current date."
+                )
         
-        logger.info(f"Considering files from the last {args.days} days as recent")
+        logger.info(
+            f"Considering files from the last {args.days} days as recent"
+        )
         run_pipeline(custom_date, args.days)
