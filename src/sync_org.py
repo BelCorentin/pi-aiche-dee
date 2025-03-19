@@ -19,13 +19,45 @@ logging.basicConfig(
 )
 logger = logging.getLogger("mne_pipeline")
 
-# Configuration
+# Configuration constants
 REMOTE_FIG_PATH = "/home/cbel/results/figs_for_report/"
 LOCAL_FIG_PATH = "/home/co/data/mne_reports/figures/"
 LOCAL_REPORT_PATH = "/home/co/data/mne_reports/"
 GITHUB_REPO_PATH = "/home/co/git/pi-aiche-dee/"
 GITHUB_FILES_PATH = os.path.join(GITHUB_REPO_PATH, "files")
 METADATA_FILE = os.path.join(LOCAL_FIG_PATH, "metadata.json")
+
+# Log message templates
+LOG_MESSAGES = {
+    # Cleanup messages
+    "cleanup_start": "Cleaning up local figures directory...",
+    "dir_created": "Created local figures directory",
+    "metadata_backup": "Backed up metadata file",
+    "cleanup_complete": "Cleaned up local figures directory",
+    "metadata_restored": "Restored metadata file",
+    "cleanup_error": "Error cleaning local figures directory: {error}",
+    
+    # Sync messages
+    "sync_start": "Syncing figures from cluster...",
+    "sync_complete": "Sync complete!",
+    "synced_files": "Synced {count} figure(s)",
+    "sync_error": "Sync failed with error: {error}",
+    "sync_exception": "Error during sync: {error}",
+    
+    # Metadata messages
+    "metadata_update": "Updated metadata database with {count} entries",
+    "metadata_error": "Error updating metadata database: {error}",
+    "metadata_loaded": "Loaded metadata for {count} files",
+    "metadata_load_error": "Error loading metadata file: {error}",
+    
+    # File organization messages
+    "files_found": "Found {count} PNG files to organize",
+    "files_filtered": "Filtered to {count} recent files (within {days} days)",
+    "no_recent_warning": "No recent files found with metadata dating. Including all files from current sync.",
+    "organization_complete": "Files organized successfully",
+    "organization_error": "Error organizing figures: {error}",
+    "file_date_error": "Error checking if file is recent: {error}"
+}
 
 # Figure metadata patterns
 METADATA_PATTERNS = {
@@ -43,12 +75,12 @@ def clean_local_figures():
     This preserves the metadata file but removes all other files and directories.
     """
     try:
-        logger.info("Cleaning up local figures directory...")
+        logger.info(LOG_MESSAGES["cleanup_start"])
         
         # Check if the directory exists
         if not os.path.exists(LOCAL_FIG_PATH):
             os.makedirs(LOCAL_FIG_PATH, exist_ok=True)
-            logger.info("Created local figures directory")
+            logger.info(LOG_MESSAGES["dir_created"])
             return True
             
         # Backup the metadata file if it exists
@@ -56,7 +88,7 @@ def clean_local_figures():
         if os.path.exists(METADATA_FILE):
             with open(METADATA_FILE, 'r') as f:
                 metadata_backup = f.read()
-            logger.info("Backed up metadata file")
+            logger.info(LOG_MESSAGES["metadata_backup"])
         
         # Remove all files and subdirectories in the local figure path
         for item in os.listdir(LOCAL_FIG_PATH):
@@ -69,17 +101,18 @@ def clean_local_figures():
                 if item_path != METADATA_FILE:
                     os.remove(item_path)
         
-        logger.info("Cleaned up local figures directory")
+        logger.info(LOG_MESSAGES["cleanup_complete"])
         
         # Restore the metadata file if it was backed up
         if metadata_backup:
             with open(METADATA_FILE, 'w') as f:
                 f.write(metadata_backup)
-            logger.info("Restored metadata file")
+            logger.info(LOG_MESSAGES["metadata_restored"])
             
         return True
     except Exception as e:
-        logger.error(f"Error cleaning local figures directory: {str(e)}")
+        error_msg = LOG_MESSAGES["cleanup_error"].format(error=str(e))
+        logger.error(error_msg)
         return False
 
 def sync_figures_from_cluster():
@@ -87,7 +120,9 @@ def sync_figures_from_cluster():
     try:
         # First clean up the local directory
         if not clean_local_figures():
-            logger.warning("Failed to clean local directory, but continuing with sync...")
+            logger.warning(
+                "Failed to clean local directory, but continuing with sync..."
+            )
         
         os.makedirs(LOCAL_FIG_PATH, exist_ok=True)
         
@@ -99,20 +134,21 @@ def sync_figures_from_cluster():
         # Remove the --ignore-existing flag to allow overwriting existing files
         # since we've already cleaned the directory
         
-        logger.info("Syncing figures from cluster...")
+        logger.info(LOG_MESSAGES["sync_start"])
         result = subprocess.run(rsync_command, capture_output=True, text=True)
         
         if result.returncode == 0:
-            logger.info("Sync complete!")
+            logger.info(LOG_MESSAGES["sync_complete"])
             # Log number of new files
-            new_files = [line for line in result.stdout.split('\n') if line.endswith('.png')]
-            logger.info(f"Synced {len(new_files)} figure(s)")
+            new_files = [line for line in result.stdout.split('\n') 
+                        if line.endswith('.png')]
+            logger.info(LOG_MESSAGES["synced_files"].format(count=len(new_files)))
             return True
         else:
-            logger.error(f"Sync failed with error: {result.stderr}")
+            logger.error(LOG_MESSAGES["sync_error"].format(error=result.stderr))
             return False
     except Exception as e:
-        logger.error(f"Error during sync: {str(e)}")
+        logger.error(LOG_MESSAGES["sync_exception"].format(error=str(e)))
         return False
 
 def extract_metadata(filename):
@@ -147,10 +183,12 @@ def update_metadata_db(new_file_metadata):
         with open(METADATA_FILE, 'w') as f:
             json.dump(metadata_db, f, indent=2)
             
-        logger.info(f"Updated metadata database with {len(new_file_metadata)} entries")
+        logger.info(
+            LOG_MESSAGES["metadata_update"].format(count=len(new_file_metadata))
+        )
         return metadata_db
     except Exception as e:
-        logger.error(f"Error updating metadata database: {str(e)}")
+        logger.error(LOG_MESSAGES["metadata_error"].format(error=str(e)))
         return {}
 
 def is_recent_file(file_path, days=7, metadata_db=None):
@@ -212,7 +250,7 @@ def is_recent_file(file_path, days=7, metadata_db=None):
         # Return True if file is newer than cutoff date
         return file_date >= cutoff_date
     except Exception as e:
-        logger.error(f"Error checking if file is recent: {str(e)}")
+        logger.error(LOG_MESSAGES["file_date_error"].format(error=str(e)))
         # If there's an error, return True to include the file by default
         return True
 
@@ -243,7 +281,7 @@ def organize_figures(days_threshold=7):
         
         # Find all PNG files
         all_png_files = glob.glob(os.path.join(LOCAL_FIG_PATH, "*.png"))
-        logger.info(f"Found {len(all_png_files)} PNG files to organize")
+        logger.info(LOG_MESSAGES["files_found"].format(count=len(all_png_files)))
         
         # Load metadata database to check file dates
         metadata_db = {}
@@ -251,17 +289,25 @@ def organize_figures(days_threshold=7):
             try:
                 with open(METADATA_FILE, 'r') as f:
                     metadata_db = json.load(f)
-                logger.info(f"Loaded metadata for {len(metadata_db)} files")
+                logger.info(
+                    LOG_MESSAGES["metadata_loaded"].format(count=len(metadata_db))
+                )
             except Exception as e:
-                logger.error(f"Error loading metadata file: {str(e)}")
+                logger.error(LOG_MESSAGES["metadata_load_error"].format(error=str(e)))
         
         # Filter to only include recent files
-        recent_png_files = [f for f in all_png_files if is_recent_file(f, days_threshold, metadata_db)]
-        logger.info(f"Filtered to {len(recent_png_files)} recent files (within {days_threshold} days)")
+        recent_png_files = [f for f in all_png_files 
+                           if is_recent_file(f, days_threshold, metadata_db)]
+        logger.info(
+            LOG_MESSAGES["files_filtered"].format(
+                count=len(recent_png_files), 
+                days=days_threshold
+            )
+        )
         
         # If no recent files found using strict filtering, include all files from this sync
         if len(recent_png_files) == 0 and len(all_png_files) > 0:
-            logger.warning("No recent files found with metadata dating. Including all files from current sync.")
+            logger.warning(LOG_MESSAGES["no_recent_warning"])
             recent_png_files = all_png_files
         
         # Track metadata for all files
@@ -286,7 +332,9 @@ def organize_figures(days_threshold=7):
                         for subcat, pattern in subcategories.items():
                             if subcat in metadata:
                                 subcat_value = metadata[subcat]
-                                subcat_path = os.path.join(category_path, f"{subcat}_{subcat_value}")
+                                subcat_path = os.path.join(
+                                    category_path, f"{subcat}_{subcat_value}"
+                                )
                                 os.makedirs(subcat_path, exist_ok=True)
                                 dest_path = os.path.join(subcat_path, filename)
                                 break
@@ -315,10 +363,10 @@ def organize_figures(days_threshold=7):
         # Update metadata database
         update_metadata_db(all_metadata)
         
-        logger.info("Files organized successfully")
+        logger.info(LOG_MESSAGES["organization_complete"])
         return True
     except Exception as e:
-        logger.error(f"Error organizing figures: {str(e)}")
+        logger.error(LOG_MESSAGES["organization_error"].format(error=str(e)))
         return False
 
 if __name__ == "__main__":
