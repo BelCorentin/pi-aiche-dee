@@ -484,11 +484,11 @@ def update_index_html(report_filename, week_dir, date_str):
             </div>
     '''
         
-        # Insert the new section after the h2 Weekly Meetings tag
-        if '<h2>Weekly Meetings</h2>' in content:
+        # Insert the new section after the h2 Weekly meetings tag
+        if '<h2>Weekly meetings</h2>' in content:
             updated_content = content.replace(
-                '<h2>Weekly Meetings</h2>', 
-                '<h2>Weekly Meetings</h2>\n' + new_section
+                '<h2>Weekly meetings</h2>', 
+                '<h2>Weekly meetings</h2>\n' + new_section
             )
             
             with open(index_path, 'w') as file:
