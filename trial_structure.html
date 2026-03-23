@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Covert Speech MEG - Trial Structure</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            margin: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #667eea;
+            margin-top: 30px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+        .trial-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-left: 5px solid #667eea;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        .timeline-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+        .timeline-number {
+            min-width: 40px;
+            height: 40px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 20px;
+        }
+        .timeline-content {
+            flex: 1;
+        }
+        .timeline-title {
+            font-weight: bold;
+            color: #333;
+            font-size: 1.1em;
+        }
+        .timeline-duration {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        .timeline-description {
+            color: #555;
+            font-size: 0.9em;
+            margin-top: 8px;
+            line-height: 1.5;
+        }
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+        .data-box {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 4px solid #2196F3;
+        }
+        .skip-option {
+            background: #ffebee;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 4px solid #f44336;
+        }
+        .parameter {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            gap: 20px;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .parameter-label {
+            font-weight: bold;
+            color: #667eea;
+        }
+        .parameter-value {
+            color: #555;
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 20px 0;
+        }
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Covert Speech MEG Study - Trial Structure</h1>
+
+        <h2>Single Trial Timeline (~8-10 seconds)</h2>
+        <div class="trial-timeline">
+            <div class="timeline-item">
+                <div class="timeline-number">1</div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Fixation Period (Baseline)</div>
+                    <div class="timeline-duration">1-3 seconds (jittered)</div>
+                    <div class="timeline-description">
+                        Participant views <span class="highlight">white fixation cross</span>. MEG records baseline neural activity and monitors for eye movements (EOG), heartbeats (ECG), and head position (HPI coils).
+                    </div>
+                    <div class="data-box">
+                        <strong>Data recorded:</strong> Baseline MEG (306 channels), EOG, ECG, HPI tracking
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-number">2</div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Auditory Stimulus Presentation (PERCEPTION)</div>
+                    <div class="timeline-duration">1.5-4 seconds (variable)</div>
+                    <div class="timeline-description">
+                        Sentence audio plays through MEG-compatible earphones at comfortable volume. Participant listens attentively (passive listening task). MEG records auditory-evoked neural responses. Stimulus trigger channel records exact onset time.
+                    </div>
+                    <div class="data-box">
+                        <strong>Neural signature:</strong> Bilateral auditory cortex (STG/MTG), N1m component (~100ms), N400m semantic component (~350-400ms)
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-number">3</div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Post-Stimulus Interval (Processing)</div>
+                    <div class="timeline-duration">≥2 seconds (minimum)</div>
+                    <div class="timeline-description">
+                        Audio stops; fixation cross remains visible. Silent period allows cognitive processing of the stimulus. No behavioral task; participant simply waits. This interval is <span class="highlight">critical</span> for accommodating natural speech rhythm—allows subject to begin inner speech at their own pace without time pressure.
+                    </div>
+                    <div class="data-box">
+                        <strong>Purpose:</strong> Enables individual variation in production latency; prevents forced repetition during pre-planning phase
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-number">4</div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Production Ready Signal</div>
+                    <div class="timeline-duration">Instantaneous</div>
+                    <div class="timeline-description">
+                        Fixation cross changes color to <span class="highlight">green</span>. This visual cue signals to participant: "You may now begin mental repetition whenever you're ready." No forced timing; subject controls when to start.
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-number">5</div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Covert Speech Production (PRODUCTION PHASE)</div>
+                    <div class="timeline-duration">2-4 seconds (subject-dependent)</div>
+                    <div class="timeline-description">
+                        <strong>Step A:</strong> Participant presses <span class="highlight">first button (START)</span> to mark beginning of mental repetition window. Marks START TIME in MEG data.
+                        <br><br>
+                        <strong>Step B:</strong> Subject <span class="highlight">covertly articulates</span> the sentence inside their head at natural, comfortable pace. No overt speech; no visible mouth movement. Purely internal/imagined articulation. Brain areas involved: Motor cortex, premotor cortex, Broca's area.
+                        <br><br>
+                        <strong>Step C:</strong> When finished with mental repetition, participant presses <span class="highlight">first button again (END)</span> to mark completion. Duration of button window reflects subject's natural speaking rate for that trial.
+                    </div>
+                    <div class="data-box">
+                        <strong>Neural signature:</strong> Bilateral motor cortex, Broca's area (BA44/45), pre-motor regions. Activity patterns similar to overt speech but with reduced motor artifact.
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-number">6</div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Skip Option (If Needed)</div>
+                    <div class="timeline-duration">Available at any point</div>
+                    <div class="timeline-description">
+                        If participant cannot recall or understand the sentence, they can press <span class="highlight">second button (SKIP)</span> at any time during the trial. Trial is marked "SKIPPED" and automatically moved to end of block for re-attempt later, after all other trials in that run are completed.
+                    </div>
+                    <div class="skip-option">
+                        <strong>Purpose:</strong> Maintains task compliance and participant comfort. Typical skip rate: 5-15% of trials. Re-attempted trials usually completed successfully (higher success rate on second try). Skipped trials excluded from analyses if not re-completed.
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-number">7</div>
+                <div class="timeline-content">
+                    <div class="timeline-title">Trial Reset & Next Stimulus</div>
+                    <div class="timeline-duration">Immediate</div>
+                    <div class="timeline-description">
+                        Fixation cross returns to white. Next sentence from stimulus set begins playing (returns to step 1). Process repeats until 80 sentences completed per run.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2>Session & Run Organization</h2>
+        <div class="grid-2">
+            <div>
+                <h3>Sessions & Runs</h3>
+                <div class="parameter">
+                    <div class="parameter-label">Runs per session:</div>
+                    <div class="parameter-value">~5 runs</div>
+                </div>
+                <div class="parameter">
+                    <div class="parameter-label">In-scanner time/session:</div>
+                    <div class="parameter-value">~75 minutes</div>
+                </div>
+                <div class="parameter">
+                    <div class="parameter-label">Total session duration:</div>
+                    <div class="parameter-value">~2.5 hours (incl. setup, breaks)</div>
+                </div>
+                <div class="parameter">
+                    <div class="parameter-label">Total sessions needed:</div>
+                    <div class="parameter-value">~8 sessions per subject</div>
+                </div>
+                <div class="parameter">
+                    <div class="parameter-label">Session spacing:</div>
+                    <div class="parameter-value">1-2 weeks apart</div>
+                </div>
+            </div>
+            <div>
+                <h3>Run Constraints</h3>
+                <div class="parameter">
+                    <div class="parameter-label">Sentences per run:</div>
+                    <div class="parameter-value">80 total</div>
+                </div>
+                <div class="parameter">
+                    <div class="parameter-label">First-3 requirement:</div>
+                    <div class="parameter-value">≥3 naturalistic sentences</div>
+                </div>
+                <div class="parameter">
+                    <div class="parameter-label">Remaining 77:</div>
+                    <div class="parameter-value">Randomized (natural + controlled)</div>
+                </div>
+                <div class="parameter">
+                    <div class="parameter-label">Run duration:</div>
+                    <div class="parameter-value">~15 minutes</div>
+                </div>
+                <div class="parameter">
+                    <div class="parameter-label">Total runs:</div>
+                    <div class="parameter-value">40 runs (8 sessions × 5)</div>
+                </div>
+            </div>
+        </div>
+
+        <h2>Key Design Principles</h2>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 20px 0;">
+            <div style="background: #e8f5e9; padding: 20px; border-radius: 5px; border-left: 4px solid #4caf50;">
+                <h4 style="color: #2e7d32; margin-top: 0;">Variable Button Press Window</h4>
+                <p style="color: #555; line-height: 1.6;">
+                    Rather than forcing fixed-duration repetition window, subjects press buttons to mark START and END of natural mental articulation. This accommodates individual differences in inner speech tempo and prevents re-repetition during mid-articulation planning.
+                </p>
+            </div>
+            <div style="background: #f3e5f5; padding: 20px; border-radius: 5px; border-left: 4px solid #9c27b0;">
+                <h4 style="color: #6a1b9a; margin-top: 0;">≥2s Post-Stimulus Interval</h4>
+                <p style="color: #555; line-height: 1.6;">
+                    Minimum 2-second silence after audio ends allows natural rhythm of inner speech initiation. No time pressure. Prevents subjects from feeling rushed or forced into production before they're cognitively ready.
+                </p>
+            </div>
+            <div style="background: #fff3e0; padding: 20px; border-radius: 5px; border-left: 4px solid #ff9800;">
+                <h4 style="color: #e65100; margin-top: 0;">First-3 Naturalistic Constraint</h4>
+                <p style="color: #555; line-height: 1.6;">
+                    Every run begins with ≥3 naturalistic (easier, less complex) sentences before controlled stimuli. Prevents cognitive difficulty ramp-up at block initiation. Allows subject acclimation within the scanner environment.
+                </p>
+            </div>
+            <div style="background: #fce4ec; padding: 20px; border-radius: 5px; border-left: 4px solid #e91e63;">
+                <h4 style="color: #880e4f; margin-top: 0;">Skip Option Available</h4>
+                <p style="color: #555; line-height: 1.6;">
+                    If subject cannot recall or understand a sentence, they can skip immediately. Trial re-queued at end of block for second attempt. Maintains compliance, reduces frustration, preserves data quality on re-attempts.
+                </p>
+            </div>
+        </div>
+
+        <h2>Total Stimulus Yield</h2>
+        <div style="background: #f0f7ff; padding: 20px; border-radius: 5px; margin: 20px 0; border: 2px solid #2196F3;">
+            <div class="parameter">
+                <div class="parameter-label">Stimuli per subject:</div>
+                <div class="parameter-value"><strong>3,200 total</strong> (2,000 unique naturalistic + 1,200 shared controlled)</div>
+            </div>
+            <div class="parameter">
+                <div class="parameter-label">Sessions × runs × sentences:</div>
+                <div class="parameter-value">8 × 5 × 80 = 3,200</div>
+            </div>
+            <div class="parameter">
+                <div class="parameter-label">Total recording time:</div>
+                <div class="parameter-value">~10 hours per subject (includes buffer time)</div>
+            </div>
+            <div class="parameter">
+                <div class="parameter-label">Expected usable trials:</div>
+                <div class="parameter-value">~85-95% after artifact rejection (2,720-3,040 trials)</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

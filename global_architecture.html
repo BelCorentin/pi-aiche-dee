@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Architecture - Covert Speech MEG</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            margin: 0;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.2em;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+        h2 {
+            color: #667eea;
+            margin-top: 40px;
+            padding-bottom: 12px;
+            border-bottom: 3px solid #667eea;
+            font-size: 1.5em;
+        }
+        .architecture-block {
+            background: #f8f9fa;
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 8px;
+            border-left: 6px solid #667eea;
+        }
+        .block-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .icon {
+            font-size: 1.8em;
+        }
+        .flow {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .flow-node {
+            padding: 15px 20px;
+            background: white;
+            border-radius: 8px;
+            border: 2px solid #667eea;
+            font-weight: 500;
+            color: #333;
+            min-width: 120px;
+            text-align: center;
+            font-size: 0.95em;
+        }
+        .flow-node.stage1 {
+            background: #e3f2fd;
+            border-color: #1976d2;
+            color: #1565c0;
+        }
+        .flow-node.stage2 {
+            background: #f3e5f5;
+            border-color: #7b1fa2;
+            color: #6a1b9a;
+        }
+        .flow-node.stage3 {
+            background: #e8f5e9;
+            border-color: #388e3c;
+            color: #2e7d32;
+        }
+        .flow-arrow {
+            font-size: 1.8em;
+            color: #999;
+            min-width: 40px;
+            text-align: center;
+        }
+        .section-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+        .section-card {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            border-top: 5px solid #667eea;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .section-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+        .section-card.gen {
+            border-top-color: #2196F3;
+        }
+        .section-card.para {
+            border-top-color: #4caf50;
+        }
+        .section-card.data {
+            border-top-color: #ff9800;
+        }
+        .section-header {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .section-text {
+            color: #555;
+            font-size: 0.95em;
+            line-height: 1.6;
+            margin: 10px 0;
+        }
+        .metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .metric {
+            background: #f5f5f5;
+            padding: 12px;
+            border-radius: 5px;
+            border-left: 3px solid #667eea;
+        }
+        .metric-label {
+            font-weight: 600;
+            color: #667eea;
+            font-size: 0.9em;
+        }
+        .metric-value {
+            font-size: 1.1em;
+            color: #333;
+            font-weight: 500;
+        }
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+        .timeline-point {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        .timeline-point:not(:last-child)::before {
+            content: '';
+            position: absolute;
+            left: 19px;
+            top: 50px;
+            width: 2px;
+            height: 50px;
+            background: #ddd;
+        }
+        .timeline-dot {
+            width: 40px;
+            height: 40px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+            font-size: 0.9em;
+        }
+        .timeline-content {
+            flex: 1;
+            padding-top: 5px;
+        }
+        .timeline-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .timeline-text {
+            color: #666;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+        .highlight-box {
+            background: linear-gradient(90deg, rgba(102,126,234,0.1) 0%, rgba(102,126,234,0.03) 100%);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            margin: 20px 0;
+        }
+        .highlight-box h3 {
+            margin-top: 0;
+            color: #667eea;
+        }
+        .key-metric {
+            display: inline-block;
+            background: #fff3cd;
+            padding: 8px 12px;
+            border-radius: 5px;
+            margin: 5px 5px 5px 0;
+            font-weight: 500;
+            color: #856404;
+            font-size: 0.95em;
+        }
+        .protocol-summary {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            padding: 25px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 2px solid #667eea33;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .stat-box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px solid #f0f0f0;
+            transition: all 0.2s;
+        }
+        .stat-box:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102,126,234,0.15);
+        }
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .stat-label {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 8px;
+        }
+        @media (max-width: 768px) {
+            .flow {
+                flex-direction: column;
+            }
+            .flow-arrow {
+                transform: rotate(90deg);
+            }
+            .metrics {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧠 Global Architecture</h1>
+        <div class="subtitle">Complete Covert Speech MEG Study Pipeline</div>
+
+        <div class="protocol-summary">
+            <h2 style="margin-top: 0; border: none; color: #333;">Overview</h2>
+            <p style="margin: 10px 0; color: #555; line-height: 1.8;">
+                This study investigates the neural mechanisms of covert (mental) speech production using MEG. Subjects listen to sentences and then mentally repeat them while neural activity is recorded. Multiple complementary analysis pipelines decode both continuous acoustic tracking (TRF) and discrete linguistic information (Pinet, Ridge) from the MEG signal, enabling direct comparison of perception vs. covert production neural codes.
+            </p>
+        </div>
+
+        <h2>01 — Stimulus Generation & Curation</h2>
+
+        <div class="section-grid">
+            <div class="section-card gen">
+                <div class="section-header"><span class="icon">🎯</span> Generation</div>
+                <div class="section-text">
+                    LLM-systematically generates ~27,000 sentences across linguistic dimensions (themes, tenses, plurality). Model: Llama 3.1 405B Instruct-Turbo via DeepInfra.
+                </div>
+                <div class="metrics">
+                    <div class="metric">
+                        <div class="metric-label">Generated</div>
+                        <div class="metric-value">27,000</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Model</div>
+                        <div class="metric-value">Llama 3.1B</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-card gen">
+                <div class="section-header"><span class="icon">🔍</span> Filtering</div>
+                <div class="section-text">
+                    Sequential filtering: (1) Remove >15 word sentences (reduce cognitive load), (2) Remove rare vocabulary. Reduces 27K → 20K while maintaining linguistic diversity.
+                </div>
+                <div class="metrics">
+                    <div class="metric">
+                        <div class="metric-label">Start</div>
+                        <div class="metric-value">27,000</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Final</div>
+                        <div class="metric-value">20,000 ✓</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-card gen">
+                <div class="section-header"><span class="icon">✅</span> Quality Control</div>
+                <div class="section-text">
+                    <strong>Naturalistic:</strong> 1 LLM pass + filtering<br>
+                    <strong>Controlled:</strong> 2-pass LLM (syntax + semantics) + full human review + error correction
+                </div>
+                <div class="metrics">
+                    <div class="metric">
+                        <div class="metric-label">Human Review</div>
+                        <div class="metric-value">1,200</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Validity</div>
+                        <div class="metric-value">100%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2>02 — Stimulus Organization & Distribution</h2>
+
+        <div class="architecture-block">
+            <div class="block-title"><span class="icon">📚</span> Stimulus Allocation Strategy</div>
+            <div class="flow">
+                <div class="flow-node stage1">20,000<br>Naturalistic<br>Pool</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-node stage2">Split:<br>2,000 each<br>10 subjects</div>
+                <div class="flow-arrow">+</div>
+                <div class="flow-node stage2">1,200<br>Controlled<br>Shared</div>
+                <div class="flow-arrow">=</div>
+                <div class="flow-node stage3">3,200<br>per subject<br>21,200 unique</div>
+            </div>
+
+            <div style="margin-top: 20px; padding: 15px; background: white; border-radius: 5px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <strong style="color: #667eea;">Naturalistic Sentences</strong>
+                        <ul style="color: #555; margin: 10px 0; padding-left: 20px;">
+                            <li>20,000 total across all subjects</li>
+                            <li>2,000 per subject (unique, no overlap)</li>
+                            <li>Prevents stimulus over-exposure</li>
+                            <li>Subject 1: nat_00001-02000</li>
+                            <li>Subject 2: nat_02001-04000</li>
+                            <li>... etc (non-overlapping)</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <strong style="color: #667eea;">Controlled Sentences</strong>
+                        <ul style="color: #555; margin: 10px 0; padding-left: 20px;">
+                            <li>1,200 total, complete coverage</li>
+                            <li>IDENTICAL across ALL subjects</li>
+                            <li>Enables between-subject comparisons</li>
+                            <li>All subjects: ctrl_00001-01200</li>
+                            <li>Syntactically manipulated</li>
+                            <li>Semantically independent</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2>03 — Audio Synthesis & Alignment</h2>
+
+        <div class="architecture-block">
+            <div class="block-title"><span class="icon">🔊</span> Audio Production & Timing</div>
+            <div class="flow">
+                <div class="flow-node stage1">20K + 1.2K<br>Text</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-node stage1">OpenAI<br>TTS-1</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-node stage2">22kHz mono<br>PCM 16-bit</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-node stage3">Forced<br>Alignment</div>
+            </div>
+
+            <div style="margin-top: 20px; padding: 15px; background: white; border-radius: 5px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <strong style="color: #667eea;">Audio Synthesis</strong>
+                        <p style="color: #555; margin: 5px 0;">
+                            ✓ Model: OpenAI TTS-1<br>
+                            ✓ Voice: "alloy" (neutral)<br>
+                            ✓ Sample rate: 22 kHz<br>
+                            ✓ Duration: 1-7 seconds (varies)
+                        </p>
+                    </div>
+                    <div>
+                        <strong style="color: #667eea;">Temporal Alignment</strong>
+                        <p style="color: #555; margin: 5px 0;">
+                            ✓ Tool: Bournemouth Forced Aligner<br>
+                            ✓ Output: Word-level timings<br>
+                            ✓ Output: Phoneme-level timings<br>
+                            ✓ Precision: ~20-50ms accuracy
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2>04 — Experimental Paradigm</h2>
+
+        <div class="architecture-block">
+            <div class="block-title"><span class="icon">🎬</span> Trial & Session Structure</div>
+
+            <h3 style="color: #667eea; margin: 20px 0 10px 0;">Single Trial (~8-10 seconds)</h3>
+            <div class="flow">
+                <div class="flow-node">Fixation<br>1-3s</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-node">Audio<br>1.5-4s</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-node">Interval<br>≥2s</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-node">Green Cue</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-node">Covert<br>Repetition</div>
+            </div>
+
+            <h3 style="color: #667eea; margin: 20px 0 10px 0;">Session Architecture</h3>
+            <div style="background: white; padding: 15px; border-radius: 5px; margin: 15px 0;">
+                <table style="width: 100%; color: #555; font-size: 0.95em;">
+                    <tr style="border-bottom: 1px solid #eee;">
+                        <td style="padding: 10px;"><strong>Level</strong></td>
+                        <td style="padding: 10px;"><strong>Count</strong></td>
+                        <td style="padding: 10px;"><strong>Duration</strong></td>
+                        <td style="padding: 10px;"><strong>Constraint</strong></td>
+                    </tr>
+                    <tr style="background: #f9f9f9;">
+                        <td style="padding: 10px;">Trial</td>
+                        <td style="padding: 10px;">1 sentence</td>
+                        <td style="padding: 10px;">~8-10s</td>
+                        <td style="padding: 10px;">Variable button window</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #eee;">
+                        <td style="padding: 10px;">Run</td>
+                        <td style="padding: 10px;">80 sentences</td>
+                        <td style="padding: 10px;">~15 min</td>
+                        <td style="padding: 10px;"><strong>≥3 naturalistic at start</strong></td>
+                    </tr>
+                    <tr style="background: #f9f9f9;">
+                        <td style="padding: 10px;">Session</td>
+                        <td style="padding: 10px;">5 runs</td>
+                        <td style="padding: 10px;">~75 min in-scanner</td>
+                        <td style="padding: 10px;">Short breaks between runs</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #eee;">
+                        <td style="padding: 10px;">Full Study</td>
+                        <td style="padding: 10px;">8 sessions</td>
+                        <td style="padding: 10px;">~2.5h each (20h total)</td>
+                        <td style="padding: 10px;">Spaced 1-2 weeks apart</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <h2>05 — MEG Data Acquisition</h2>
+
+        <div class="section-grid">
+            <div class="section-card data">
+                <div class="section-header"><span class="icon">🎙️</span> MEG System</div>
+                <div class="section-text">
+                    <strong>Elekta Neuromag TRIUX</strong><br>
+                    • 102 magnetometers<br>
+                    • 204 planar gradiometers<br>
+                    • Total: 306 channels<br>
+                    • Sampling: 1000 Hz<br>
+                    • Filtering: 0.1-330 Hz
+                </div>
+            </div>
+
+            <div class="section-card data">
+                <div class="section-header"><span class="icon">🔗</span> Auxiliary Channels</div>
+                <div class="section-text">
+                    <strong>Monitoring & Artifact Detection</strong><br>
+                    • EOG: 2 channels (eye tracking)<br>
+                    • ECG: 1 channel (heartbeat)<br>
+                    • HPI: 5 channels (head position)<br>
+                    • Trigger: 1 channel (stimulus onset)
+                </div>
+            </div>
+
+            <div class="section-card data">
+                <div class="section-header"><span class="icon">📊</span> Structural MRI</div>
+                <div class="section-text">
+                    <strong>Anatomical Reference</strong><br>
+                    • 3T Siemens Magnetom Prisma<br>
+                    • T1-weighted MPRAGE<br>
+                    • 1mm isotropic resolution<br>
+                    • Defaced for anonymity<br>
+                    • Coregistered to MEG space
+                </div>
+            </div>
+        </div>
+
+        <h2>06 — Data Preprocessing</h2>
+
+        <div class="architecture-block">
+            <div class="block-title"><span class="icon">⚙️</span> Preprocessing Pipeline</div>
+
+            <div class="timeline">
+                <div class="timeline-point">
+                    <div class="timeline-dot">1</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Maxwell Filtering & Head Motion Correction</div>
+                        <div class="timeline-text">Suppress environmental noise; align all runs to reference head position</div>
+                    </div>
+                </div>
+
+                <div class="timeline-point">
+                    <div class="timeline-dot">2</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Bandpass Filtering (0.5-20 Hz)</div>
+                        <div class="timeline-text">Remove drift and high-frequency noise while retaining neural signals</div>
+                    </div>
+                </div>
+
+                <div class="timeline-point">
+                    <div class="timeline-dot">3</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Bad Channel Detection</div>
+                        <div class="timeline-text">Automated + manual identification of noisy/flat channels; exclude from analysis</div>
+                    </div>
+                </div>
+
+                <div class="timeline-point">
+                    <div class="timeline-dot">4</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">ICA Artifact Removal</div>
+                        <div class="timeline-text">Remove ocular blinks, saccades, muscle noise via ICA component identification</div>
+                    </div>
+                </div>
+
+                <div class="timeline-point">
+                    <div class="timeline-dot">5</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Stimulus Alignment</div>
+                        <div class="timeline-text">Match trigger channel timing to word/phoneme onsets; epoch data accordingly</div>
+                    </div>
+                </div>
+
+                <div class="timeline-point">
+                    <div class="timeline-dot">6</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Covert Speech Alignment</div>
+                        <div class="timeline-text">Align mental repetition window (button presses) to linguistic content (naive or stretching)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2>07 — Analysis & Decoding</h2>
+
+        <div class="section-grid">
+            <div class="section-card">
+                <div class="section-header"><span class="icon">📈</span> TRF Analysis</div>
+                <div class="section-text">
+                    <strong>Temporal Response Function</strong><br>
+                    Tracks neural tracking of continuous speech envelope. Compares perception vs. production.
+                </div>
+                <div class="metrics">
+                    <div class="metric">
+                        <div class="metric-label">Output</div>
+                        <div class="metric-value">Correlation curves</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Time Window</div>
+                        <div class="metric-value">-200 to +600ms</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-card">
+                <div class="section-header"><span class="icon">🧠</span> Pinet Decoding</div>
+                <div class="section-text">
+                    <strong>Deep Learning</strong><br>
+                    Decodes linguistic features (POS, word ID, embeddings) using ChannelMerger + SimpleConv.
+                </div>
+                <div class="metrics">
+                    <div class="metric">
+                        <div class="metric-label">Output</div>
+                        <div class="metric-value">Classification accuracy</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Target</div>
+                        <div class="metric-value">20-35% accuracy</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-card">
+                <div class="section-header"><span class="icon">📊</span> Ridge Baseline</div>
+                <div class="section-text">
+                    <strong>Classical Ridge Regression</strong><br>
+                    Decodes lexical properties (frequency, length, semantics); validates data quality.
+                </div>
+                <div class="metrics">
+                    <div class="metric">
+                        <div class="metric-label">Speed</div>
+                        <div class="metric-value">~1 hour CPU</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-label">Effect</div>
+                        <div class="metric-value">r=0.1-0.4</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2>08 — Key Metrics & Targets</h2>
+
+        <div class="stats">
+            <div class="stat-box">
+                <div class="stat-number">3,200</div>
+                <div class="stat-label">Stimuli per subject</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">21,200</div>
+                <div class="stat-label">Unique sentences total</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">10h</div>
+                <div class="stat-label">Recording per subject</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">85-95%</div>
+                <div class="stat-label">Trial retention</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">306</div>
+                <div class="stat-label">MEG channels</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">1 kHz</div>
+                <div class="stat-label">Sampling rate</div>
+            </div>
+        </div>
+
+        <h2>09 — Critical Constraints & Rationale</h2>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin: 30px 0;">
+            <div style="background: #e3f2fd; padding: 20px; border-radius: 8px; border-left: 4px solid #1976d2;">
+                <h3 style="margin-top: 0; color: #0d47a1;">≥3 Naturalistic Sentences per Run Start</h3>
+                <p style="color: #333; line-height: 1.6; margin: 10px 0;">
+                    Naturalistic sentences simpler syntactically than controlled (esp. object-relatives). Starting with simple stimuli prevents cognitive difficulty ramp-up and allows subject acclimation within scanner environment.
+                </p>
+            </div>
+
+            <div style="background: #f3e5f5; padding: 20px; border-radius: 8px; border-left: 4px solid #6a1b9a;">
+                <h3 style="margin-top: 0; color: #4a148c;">Variable Button Press Window</h3>
+                <p style="color: #333; line-height: 1.6; margin: 10px 0;">
+                    Rather than fixed-duration repetition window, subjects press START/END to mark their natural articulation pacing. Accommodates individual differences and prevents forced re-repetition while mid-planning.
+                </p>
+            </div>
+
+            <div style="background: #fff3e0; padding: 20px; border-radius: 8px; border-left: 4px solid #e65100;">
+                <h3 style="margin-top: 0; color: #bf360c;">≥2 Second Post-Stimulus Interval</h3>
+                <p style="color: #333; line-height: 1.6; margin: 10px 0;">
+                    Minimum 2-second silence after audio ends allows natural rhythm of inner speech initiation. No time pressure. Prevents subjects from feeling rushed; accommodates individual latencies.
+                </p>
+            </div>
+
+            <div style="background: #fce4ec; padding: 20px; border-radius: 8px; border-left: 4px solid #880e4f;">
+                <h3 style="margin-top: 0; color: #880e4f;">Skip Option Available</h3>
+                <p style="color: #333; line-height: 1.6; margin: 10px 0;">
+                    If unable to recall sentence, subjects can skip immediately. Maintains task compliance, reduces frustration. Trial re-queued at block end for second attempt. Typical success on retry: ~80-90%.
+                </p>
+            </div>
+        </div>
+
+        <h2>Summary: Complete Data Package</h2>
+
+        <div class="highlight-box">
+            <h3 style="margin-top: 0;">What You Get per Subject</h3>
+            <ul style="color: #555; line-height: 1.8; font-size: 0.95em;">
+                <li><strong>3,200 sentence stimuli:</strong> 2,000 unique naturalistic + 1,200 shared controlled</li>
+                <li><strong>Raw MEG data:</strong> 306 channels × 1 kHz × ~10 hours = ~108 GB/subject</li>
+                <li><strong>Preprocessed data:</strong> Maxwell-filtered, ICA-cleaned, epoched</li>
+                <li><strong>Audio alignments:</strong> Word/phoneme timings via forced alignment</li>
+                <li><strong>Behavioral markers:</strong> Button press start/end times (marks production windows)</li>
+                <li><strong>Anatomical MRI:</strong> T1-weighted, coregistered to MEG space</li>
+                <li><strong>Derived features:</strong> TRF correlations, Pinet predictions, Ridge baseline effects</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; color: #999; margin-top: 50px; padding-top: 30px; border-top: 1px solid #eee; font-size: 0.9em;">
+            <p>Complete dataset: ~10TB total (assuming ~100 subjects)</p>
+            <p>Storage: BIDS-formatted, publicly available on OpenNeuro/Neurovault</p>
+            <p>Analysis code: Public GitHub repositories for stimulus generation, preprocessing, and all pipelines</p>
+        </div>
+    </div>
+</body>
+</html>
