@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindSentences2025 Decoding Project</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-light: #eff6ff;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --bg-body: #f3f4f6;
+            --bg-card: #ffffff;
+            --border: #e5e7eb;
+            --accent: #10b981;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            letter-spacing: -0.02em;
+        }
+
+        .meta {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            border: 1px solid var(--border);
+        }
+
+        h2 {
+            margin-top: 0;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--primary-light);
+            color: var(--text-main);
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h3 {
+            color: var(--text-main);
+            font-size: 1.2rem;
+            margin-top: 25px;
+        }
+
+        /* Goal highlight box */
+        .goal-box {
+            background-color: var(--primary-light);
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #1e3a8a;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        th {
+            background-color: #f8fafc;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Code/Config blocks */
+        .code-snippet {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        /* Tags/Badges */
+        .tag {
+            display: inline-block;
+            background: var(--bg-body);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border: 1px solid var(--border);
+            margin: 2px;
+        }
+
+        .tag.blue { background: #e0f2fe; color: #0369a1; border-color: #bae6fd; }
+        .tag.green { background: #dcfce7; color: #15803d; border-color: #bbf7d0; }
+        .tag.purple { background: #f3e8ff; color: #7e22ce; border-color: #e9d5ff; }
+
+        /* Grid for details */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        /* Mermaid Graph Container */
+        .schema-container {
+            background: #fafafa;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            display: flex;
+            justify-content: center;
+            overflow-x: auto;
+        }
+        
+        ul {
+            padding-left: 20px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <header>
+        <h1>MindSentences2025 Decoding Project</h1>
+        <div class="meta">Project Pipeline & Structure Summary &bull; Last updated: April 2025</div>
+    </header>
+
+    <!-- Goal Section -->
+    <div class="card">
+        <h2>🎯 Project Objective</h2>
+        <div class="goal-box">
+            Compare <strong>linear decoding</strong> (SlidingWindow + RidgeCV) versus <strong>deep learning</strong> (PiNet) across a predefined <strong>linguistic hierarchy</strong> for both perception and production conditions, including cross-condition transfer analysis.
+        </div>
+    </div>
+
+    <!-- Linguistic Hierarchy -->
+    <div class="card">
+        <h2>📊 Linguistic Hierarchy</h2>
+        <p>The feature extraction process is structured across four escalating levels of linguistic complexity:</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Level</th>
+                    <th>Feature Description</th>
+                    <th>Extractor Code</th>
+                    <th>Lock Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>1. Acoustic</strong></td>
+                    <td>Audio Volume, Mel Spectrogram</td>
+                    <td><span class="tag">ToStatic(AudioVolume)</span> <span class="tag">ToStatic(MelSpectrum)</span></td>
+                    <td>Word</td>
+                </tr>
+                <tr>
+                    <td><strong>2. Phonetic</strong></td>
+                    <td>Phoneme identity (one-hot)</td>
+                    <td><span class="tag">LabelEncoder(text)</span></td>
+                    <td>Phoneme</td>
+                </tr>
+                <tr>
+                    <td><strong>2.5. Syllable</strong></td>
+                    <td>Syllable class/embedding <em>(TODO)</em></td>
+                    <td><span class="tag">LabelEncoder</span> <span class="tag">FastTextEmbedding</span></td>
+                    <td>Syllable</td>
+                </tr>
+                <tr>
+                    <td><strong>3. Word-level</strong></td>
+                    <td>POS, WordFreq, Lexical</td>
+                    <td><span class="tag">LabelEncoder(pos)</span> <span class="tag">WordFrequency</span> <span class="tag">SpacyEmbedding</span></td>
+                    <td>Word</td>
+                </tr>
+                <tr>
+                    <td><strong>4. Contextual</strong></td>
+                    <td>Contextualized syntax</td>
+                    <td><span class="tag">HuggingFaceText(contextualized=True)</span></td>
+                    <td>Word</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pipeline Schemas -->
+    <div class="card">
+        <h2>⚙️ Parallel Pipelines</h2>
+        
+        <div class="grid-2">
+            <div>
+                <h3>1. Linear Pipeline <span class="tag blue">SlidingWindow</span></h3>
+                <p><strong>Best for:</strong> Interpretability, baseline comparison, and fast iteration.</p>
+                <ul>
+                    <li><strong>Config:</strong> <code>hierarchy_exps.py &rarr; HIERARCHY_CONFIGS</code></li>
+                    <li><strong>Run:</strong> <code>python run.py</code></li>
+                </ul>
+            </div>
+            <div>
+                <h3>2. Deep Learning Pipeline <span class="tag purple">PiNet</span></h3>
+                <p><strong>Best for:</strong> Learning complex non-linear patterns, spatial attention, and end-to-end optimization.</p>
+                <ul>
+                    <li><strong>Config:</strong> <code>pinet/config.py</code></li>
+                    <li><strong>Run:</strong> <code>python -m projects.b1_mindsentences.pinet.run</code></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Mermaid Schemas -->
+        <h3 style="text-align: center; margin-top: 40px;">Data Flow Architecture</h3>
+        <div class="schema-container">
+            <div class="mermaid">
+                flowchart TD
+                    subgraph Data["Input Data"]
+                        E[Events] --> SD[SegmentDataset / MindSentData]
+                    end
+
+                    subgraph Linear["1. Linear Pipeline"]
+                        SD --> MEG[MEG Extractor X]
+                        SD --> FEAT[Feature Extractor Y]
+                        MEG --> SW[SlidingWindow + RidgeCV]
+                        FEAT --> SW
+                        SW --> R2[R² Score per timepoint]
+                    end
+
+                    subgraph PiNet["2. PiNet Deep Learning Pipeline"]
+                        SD --> DL[Batched DataLoaders]
+                        DL --> CM[ChannelMerger<br>Spatial Attention: 306 → 270 ch]
+                        CM --> SC[SimpleConv<br>4 Dilated Temporal Conv Layers]
+                        SC --> GAP[Global Average Pool]
+                        GAP --> LH[Linear Head]
+                        LH --> LT[Lightning Trainer<br>GPU / WandB]
+                    end
+
+                    classDef pipeline fill:#eff6ff,stroke:#2563eb,stroke-width:2px;
+                    classDef dl fill:#f3e8ff,stroke:#7e22ce,stroke-width:2px;
+                    class Linear pipeline;
+                    class PiNet dl;
+            </div>
+        </div>
+    </div>
+
+    <!-- PiNet Architecture Details -->
+    <div class="card">
+        <h2>🧠 PiNet Architecture Details</h2>
+        <div class="grid-2">
+            <div>
+                <h3>ChannelMerger (Spatial Attention)</h3>
+                <p>Learns which MEG channels are most informative dynamically:</p>
+                <ul>
+                    <li><strong>Input:</strong> 306 MEG channels with 2D coordinates.</li>
+                    <li><strong>Embeddings:</strong> Fourier position embeddings (2048 dim).</li>
+                    <li><strong>Compression:</strong> Attention-weighted projection down to 270 virtual channels.</li>
+                    <li><strong>Regularization:</strong> Dropout (0.2).</li>
+                </ul>
+            </div>
+            <div>
+                <h3>SimpleConv (Temporal Processing)</h3>
+                <p>Extracts temporal patterns using an expanding receptive field:</p>
+                <ul>
+                    <li><strong>Layers:</strong> 4 dilated convolutional layers (kernel=5, dilation=1, 2, 4, 8).</li>
+                    <li><strong>Architecture:</strong> Skip connections to preserve fine-grained temporal structure.</li>
+                    <li><strong>Output:</strong> Global average pooling into a unified feature vector.</li>
+                </ul>
+            </div>
+        </div>
+        
+        <h3 style="margin-top:20px;">Training Specifications</h3>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <span class="tag green">Optimizer: AdamW (lr=1e-3, decay=1e-4)</span>
+            <span class="tag green">Scheduler: OneCycleLR</span>
+            <span class="tag green">Early Stopping: Patience=10</span>
+            <span class="tag green">Gradient Clipping: 1.0</span>
+        </div>
+    </div>
+
+    <!-- Experimental Conditions & Subscoring -->
+    <div class="card">
+        <h2>🔬 Experimental Design & Evaluations</h2>
+        
+        <h3>Decoding Conditions & Cross-Transfer</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Analysis Type</th>
+                    <th>Train Query</th>
+                    <th>Test Query</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Perception (Within)</strong></td>
+                    <td><span class="code-snippet">condition=="Perception"</span></td>
+                    <td><span class="code-snippet">condition=="Perception"</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Production (Within)</strong></td>
+                    <td><span class="code-snippet">condition=="Production"</span></td>
+                    <td><span class="code-snippet">condition=="Production"</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Transfer: Perc &rarr; Prod</strong></td>
+                    <td><span class="code-snippet">condition=="Perception"</span></td>
+                    <td><span class="code-snippet">condition=="Production"</span></td>
+                </tr>
+                <tr>
+                    <td><strong>Transfer: Prod &rarr; Perc</strong></td>
+                    <td><span class="code-snippet">condition=="Production"</span></td>
+                    <td><span class="code-snippet">condition=="Perception"</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Subscoring Criteria</h3>
+        <p>Model performance is further evaluated across several behavioral and linguistic dimensions:</p>
+        <div class="grid-2" style="margin-top: 15px;">
+            <div>
+                <ul>
+                    <li><strong>Lexical Type:</strong> Content vs. Non-content words.<br>
+                        <em>(Content: NN, NNS, VB, VBD, VBG, VBZ, VBP, VBN, JJ, JJR, RB)</em>
+                    </li>
+                    <li><strong>Sentence Position:</strong> 
+                        <code>is_first_word</code>, <code>is_last_word</code>, and general <code>position_in_sentence</code>.
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <ul>
+                    <li><strong>Vocabulary Bounds:</strong> Performance on Out of Vocabulary (OOV) tokens.</li>
+                    <li><strong>Grammar Breakdown:</strong> All 22 individual POS tags.</li>
+                    <li><strong>Behavioral Accuracy:</strong> Split by Trial Accuracy brackets<br>
+                        <em>(High >70%, Mid 30-70%, Low <30%)</em>.
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Mermaid.js for beautiful flowcharts -->
+<script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ 
+        startOnLoad: true, 
+        theme: 'base',
+        themeVariables: {
+            fontFamily: 'Inter',
+            primaryColor: '#ffffff',
+            primaryBorderColor: '#cbd5e1',
+            lineColor: '#64748b',
+            textColor: '#1f2937'
+        }
+    });
+</script>
+
+</body>
+</html>
