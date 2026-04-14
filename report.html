@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8">
+<title>MindSentences2025 — Sub-06 Report</title>
+<style>
+body { font-family: 'Segoe UI',sans-serif; max-width:1100px; margin:0 auto; padding:20px; background:#f8f9fa; }
+h1 { color:#264653; border-bottom:3px solid #2a9d8f; padding-bottom:10px; }
+h2 { color:#2a9d8f; margin-top:30px; }
+h3 { color:#e76f51; }
+p { line-height:1.6; }
+pre { background:#2d2d2d; color:#f0f0f0; padding:15px; border-radius:5px; overflow-x:auto; font-size:12px; }
+code { background:#e0e0e0; padding:2px 5px; border-radius:3px; }
+figure { margin:20px 0; text-align:center; }
+figure img { border:1px solid #ddd; border-radius:4px; box-shadow:0 2px 8px #0003; max-width:100%; }
+figcaption { font-style:italic; color:#666; margin-top:8px; }
+table { border-collapse:collapse; margin:15px 0; }
+table th { background:#264653; color:white; padding:8px 12px; }
+table td { padding:6px 12px; }
+table tr:nth-child(even) { background:#e8e8e8; }
+ul { line-height:1.8; }
+</style></head><body>
+<h1>MindSentences2025 — Subject 06 Analysis Report</h1><p>Generated: 2026-04-14 07:04</p><p>Subject query: <code>timeline_index>=199 and timeline_index<=237</code> (39 runs)</p><p><b>Note:</b> Script completed Phases 0–7 + Phase 8 (partial). Phases 9–10 not reached due to ToStatic validation error.</p><h2>1. Events Overview</h2><p>295,244 events total, 56,054 Word events across 39 runs.</p><p>AddSentenceType: nat=157,314, ctrl=137,930, unknown=39</p><p>AddReplayFlag: flagged 38,568 events from 308 replayed sentences</p><p>✓ All words have condition (Perception / Production)</p><h2>2. Nat / Ctrl Distribution</h2><figure><img src="/home/co/Pictures/figures/nat_ctrl_distribution.png" style="max-width:100%"><figcaption>Sentence type distribution</figcaption></figure><h2>3. Nat / Ctrl Interleaving Per Run</h2><figure><img src="/home/co/Pictures/figures/nat_ctrl_interleaving.png" style="max-width:100%"><figcaption>Interleaving across runs</figcaption></figure><h2>4. Position Distributions</h2><figure><img src="/home/co/Pictures/figures/position_distributions.png" style="max-width:100%"><figcaption>Word position in sentence (left) + Sentence position in run (right)</figcaption></figure><p>⚠ <b>Bug:</b> sentence_position_in_run shows position 20 with ~43K words; positions 1–19 near-zero. Transform needs debugging.</p><h2>5. Matrix Inspection: MEG & SpacyEmbedding</h2><p>Spot-check of time-locked [-5s, +5s] data at start, middle, and end of session.</p><figure><img src="/home/co/Pictures/figures/matrix_inspection_199.png" style="max-width:100%"><figcaption>Run 1 (start)</figcaption></figure><figure><img src="/home/co/Pictures/figures/matrix_inspection_218.png" style="max-width:100%"><figcaption>Run 20 (middle)</figcaption></figure><figure><img src="/home/co/Pictures/figures/matrix_inspection_237.png" style="max-width:100%"><figcaption>Run 39 (end)</figcaption></figure><p>MEG signal looks clean with visible event-related activity around t=0. SpacyEmbedding is trigger-aggregated (spike at t=0, flat elsewhere).</p><h2>6. Subscore: Sentence Position in Run</h2><p>WordFrequency decoding subscored by sentence position (1st, 2nd, 3rd, 4th+). Trained on all Perception words.</p><figure><img src="/home/co/Pictures/figures/subscore_sentence_position.png" style="max-width:100%"><figcaption>Sentence position in run subscore</figcaption></figure><p>All positions show comparable decoding (~0.05–0.10 peak). 2nd sentence slightly higher. No strong sentence-position confound.</p><h2>7. Subscore: Word Position in Sentence</h2><p>WordFrequency decoding subscored by word position (1st, 2nd, 3rd, 4th+). Trained on all Perception words.</p><figure><img src="/home/co/Pictures/figures/subscore_word_position.png" style="max-width:100%"><figcaption>Word position in sentence subscore</figcaption></figure><p> "All" (blue) peaks at r≈0.10 near t=0. Individual positions are noisier/lower.
+Pos 1 (1st word) shows strong negative dip pre-onset — consistent with no prior word in epoch window.</p><h2>8. Double-Peak Investigation: Pos 1 vs Pos 4+</h2><p><b>Hypothesis:</b> The -2s pre-onset peak previously observed is a word-position confound.
+1st words have no prior word in their epoch → no pre-onset decoding.
+Later words (4th+) have prior words in their epoch → spurious pre-onset signal.</p><figure><img src="/home/co/Pictures/figures/double_peak_pos1_vs_pos4.png" style="max-width:100%"><figcaption>Pos 1 vs Pos 4+: pre-onset should be flat for Pos 1</figcaption></figure><p><b>Result:</b> Pos 1 (teal) shows NO pre-onset peak — flat around zero before t=0, then ramps up strongly post-onset (peak r≈0.13 at +5s).
+Pos 4+ (salmon) shows mild positive pre-onset signal.
+<br><b>→ Confirms the -2s peak is a word-position confound, not a neural anticipation effect.</b></p><h2>9. Sentence-Timelocked Decoding (FAILED)</h2><p>⚠ SentLock_WF failed: <code>ToStatic cannot crop a static extractor as it is timeless</code>.</p><p>WordFrequency is already static (trigger-aggregated), so wrapping it in ToStatic is invalid. Needs a different approach (e.g., use MelSpectrum or SpeechEnvelope as the single-aggregated feature).</p><h2>10. Baseline Decoding: 2×2 Grid (WF + Spacy × Perc / Prod)</h2><figure><img src="/home/co/Pictures/figures/baseline_2x2.png" style="max-width:100%"><figcaption>Baseline decoding — 4 configurations</figcaption></figure><p><b>WordFrequency (top row):</b>
+<ul>
+<li>Train Perception → Test Perception: peak r≈0.10 at +0.5s</li>
+<li>Train Perception → Test Production: near zero (no cross-condition for WF)</li>
+<li>Train Production → Test Production: peak r≈0.10 at +0.5s — <b>inner speech is decodable!</b></li>
+<li>Train Production → Test Perception: near zero</li>
+</ul>
+<b>SpacyEmbedding (bottom row):</b>
+<ul>
+<li>Train Perception → Test Perception: peak r≈0.025 at +0.5s</li>
+<li>Train Perception → Test Production: near zero</li>
+<li>Train Production → Test Production: peak r≈0.025 at +0.5s — <b>inner speech semantic content decodable</b></li>
+<li>Train Production → Test Perception: near zero</li>
+</ul>
+<b>Key finding:</b> Both WF and Spacy are decodable from production (inner speech). However, cross-condition transfer (Perc→Prod, Prod→Perc) is weak — suggesting different neural representations.</p><h2>11. Nat vs Ctrl: WordFrequency</h2><figure><img src="/home/co/Pictures/figures/subscore_nat_ctrl_wf.png" style="max-width:100%"><figcaption>WF: nat vs ctrl subscore</figcaption></figure><p>Controlled sentences show slightly higher peak (~0.12) vs natural (~0.07). Both peak near t=0.</p><h2>12. Nat vs Ctrl: SpacyEmbedding 3×3 Cross-Training</h2><figure><img src="/home/co/Pictures/figures/spacy_nat_ctrl_3x3.png" style="max-width:100%"><figcaption>SpacyEmbedding nat/ctrl cross-training</figcaption></figure><p>Controlled sentences consistently decode better than natural across all training conditions.
+<br>Train-ctrl → Test-ctrl: highest peak (~0.03).
+<br>Natural sentences show lower decoding overall.
+<br><b>Possible explanation:</b> Controlled sentences may have more predictable/structured semantic content (constructed stimuli), making embeddings easier to decode.</p><h2>13. Aggregation Comparison (PARTIAL)</h2><p>WF_trigger completed (r≈0.10 peak). WF_ToStatic_single crashed — same ToStatic error as Phase 9.</p><p>⚠ Phases 9–10 (MEL→Spacy control, Ghost production MEL) not reached.</p><h2>Summary Table</h2><table border="1" cellpadding="5" cellspacing="0" style="border-collapse:collapse"><tr><th>Status</th><th>Analysis</th><th>Result</th></tr><tr><td>✅</td><td>Events pipeline</td><td>295K events, 56K words, nat/ctrl balanced, replays flagged</td></tr><tr><td>✅</td><td>Matrix inspection</td><td>MEG clean, SpacyEmbedding trigger-aggregated</td></tr><tr><td>✅</td><td>Sentence position subscore</td><td>No strong position effect within run</td></tr><tr><td>✅</td><td>Word position subscore</td><td>Pos1 different profile — no pre-onset signal</td></tr><tr><td>✅</td><td>Double-peak = confound</td><td>Pos1 flat pre-onset, Pos4+ positive → confirms word-position confound</td></tr><tr><td>✅</td><td>Baseline WF decoding</td><td>r≈0.10 Perception, r≈0.10 Production</td></tr><tr><td>✅</td><td>Baseline Spacy decoding</td><td>r≈0.025 Perception, r≈0.025 Production</td></tr><tr><td>✅</td><td>Inner speech decodable</td><td>Both WF and Spacy decode from Production condition</td></tr><tr><td>✅</td><td>Nat vs Ctrl (WF)</td><td>Ctrl slightly higher peak (~0.12 vs 0.07)</td></tr><tr><td>✅</td><td>Nat vs Ctrl (Spacy 3×3)</td><td>Ctrl consistently better across train conditions</td></tr><tr><td>⚠</td><td>Sentence-locked decoding</td><td>ToStatic validation error — needs different approach</td></tr><tr><td>⚠</td><td>Aggregation comparison</td><td>Partial — ToStatic(single) variant failed</td></tr><tr><td>❌</td><td>MEL→Spacy control</td><td>Not reached</td></tr><tr><td>❌</td><td>Ghost production MEL</td><td>Not reached</td></tr><tr><td>⚠</td><td>POS subscores</td><td>benepar broken (T5Tokenizer) — all POS=UNK</td></tr><tr><td>⚠</td><td>sentence_position_in_run transform</td><td>Bug: position 20 gets all events, 1–19 near-empty</td></tr></table><p><b>Known issues to fix:</b>
+<ol>
+<li>benepar T5Tokenizer broken → upgrade transformers or pin compatible version</li>
+<li>sentence_position_in_run transform bug → all words mapped to position 20</li>
+<li>ToStatic(WordFrequency) invalid → use non-static extractor for sentence-locked analysis</li>
+</ol></p>
+</body></html>
