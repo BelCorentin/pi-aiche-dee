@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reports | pi-aiche-dee</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="index.html">pi-aiche-dee</a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="index.html">Home</a>
+        <a href="experiments.html">Experiments</a>
+        <a href="reports.html">Reports</a>
+        <a href="global_architecture.html">Architecture</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="kicker">Report Hub</div>
+      <h1>Operational status and analysis outputs.</h1>
+      <p>Direct links to the most relevant pages while iterative runs are in progress. This page is meant to stay short and practical.</p>
+    </section>
+
+    <section class="grid" aria-label="Report highlights">
+      <article class="card span-8">
+        <h3>MindSent Temporary Project Status</h3>
+        <p>High-signal project overview summary for daily coordination snapshots.</p>
+        <a href="report.html">Open status gateway</a>
+      </article>
+
+      <article class="card span-4">
+        <h3>Legacy Generated Report</h3>
+        <p>Script-produced page with plots and long-form details.</p>
+        <a class="secondary" href="report.html">Open report</a>
+      </article>
+
+      <article class="card span-6">
+        <h3>MEG Evoked</h3>
+        <p>Median evoked view used for quick visual checks.</p>
+        <a href="meg_evoked_report_median.html">Open MEG evoked</a>
+      </article>
+
+      <article class="card span-6">
+        <h3>Trigger Alignment</h3>
+        <p>Interactive report for trigger alignment diagnostics.</p>
+        <a href="trigger_alignment_results_report_interactive.html">Open trigger report</a>
+      </article>
+    </section>
+
+    <section class="section">
+      <h2>Status Snapshot</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>State</th>
+            <th>Note</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Stage 1 event sanity</td>
+            <td class="status-ok">Completed</td>
+            <td>Overlap and nat/ctrl diagnostics generated in canonical report tree.</td>
+          </tr>
+          <tr>
+            <td>MindSent all-subject PiNet retry</td>
+            <td class="status-ok">Completed</td>
+            <td>Latest tracked test_acc around 0.2032.</td>
+          </tr>
+          <tr>
+            <td>MindSent all-subject B2T retry4</td>
+            <td class="status-warn">Monitoring</td>
+            <td>Final CER/WER to be captured and folded into summary pages.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <footer class="container footer">
+    <p>Reports hub is intentionally compact and can be refreshed quickly during live runs.</p>
+  </footer>
+</body>
+</html>
