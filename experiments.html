@@ -1,148 +1,89 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PhD Experiments</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            line-height: 1.6;
-            color: #333;
-            background-color: #f5f5f5;
-        }
-
-        h1,
-        h2,
-        h3 {
-            color: #2c3e50;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: auto;
-            padding: 30px;
-            border-radius: 8px;
-            background-color: #fff;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .experiment-card {
-            margin-bottom: 30px;
-            padding: 20px;
-            border-left: 4px solid #3498db;
-            background-color: #f9f9f9;
-            border-radius: 0 8px 8px 0;
-            transition: transform 0.3s ease;
-        }
-
-        .experiment-card:hover {
-            transform: translateX(5px);
-        }
-
-        .experiment-title {
-            font-weight: bold;
-            color: #3498db;
-            margin-bottom: 10px;
-            font-size: 1.4em;
-        }
-
-        .experiment-link {
-            display: inline-block;
-            margin: 10px 0;
-            padding: 8px 15px;
-            background-color: #3498db;
-            border-radius: 4px;
-            color: white;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .experiment-link:hover {
-            background-color: #2980b9;
-            transform: translateY(-2px);
-        }
-
-        .nav-link {
-            display: inline-block;
-            margin: 0 10px 20px 0;
-            padding: 8px 15px;
-            background-color: #e7f4ff;
-            border-radius: 4px;
-            color: #2980b9;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .nav-link:hover {
-            background-color: #d0e8ff;
-            transform: translateY(-2px);
-        }
-
-        header {
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        .intro {
-            margin-bottom: 30px;
-            text-align: justify;
-        }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Experiments | pi-aiche-dee</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
 </head>
-
 <body>
-    <div class="container">
-        <header>
-            <h1>PhD Experiments</h1>
-            <p>Overview of experimental protocols and data</p>
-        </header>
-
-        <nav>
-            <a href="index.html" class="nav-link">Home</a>
-            <a href="experiments.html" class="nav-link">Experiments</a>
-        </nav>
-
-        <section class="intro">
-            <h2>Research Experiments</h2>
-            <p>This page catalogs the experimental protocols developed during my PhD research. Each experiment includes
-                a description, methodology, and access to sample data and results.</p>
-        </section>
-
-        <div class="experiment-card">
-            <div class="experiment-title">Mindsentences</div>
-            <p>An experiment examining neural responses to auditory language processing using MEG. This study focuses
-                syntax building and word decoding for controlled and naturalistic stims.</p>
-            <a href="experiments/mindsentences.html" class="experiment-link">View Details</a>
-        </div>
-
-        <div class="experiment-card">
-            <div class="experiment-title">Distraction</div>
-            <p>This experiment investigates how distractions impact neural dynamics of speech comprehension.
-                Different types of distractions (math, memory tasks etc..) are presented every other normal listening
-                run.</p>
-            <a href="experiments/distraction.html" class="experiment-link">View Details</a>
-        </div>
-
-        <div class="experiment-card">
-            <div class="experiment-title">Probe</div>
-            <p>An experiment where we try to probe both the brain and language models looking for syntactic cues.</p>
-            <a href="experiments/probe.html" class="experiment-link">View Details</a>
-        </div>
-
-        <div class="experiment-card">
-            <div class="experiment-title">ExpertLM</div>
-            <p>Research exploring how preprompting a LLM with some expert qualification would change its embeddings,
-                processing of information and ultimately brain scores.</p>
-            <a href="experiments/expertlm.html" class="experiment-link">View Details</a>
-        </div>
-
-        <footer>
-            <p>Last updated: February 2025</p>
-        </footer>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="index.html">pi-aiche-dee</a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="index.html">Home</a>
+        <a href="experiments.html">Experiments</a>
+        <a href="reports.html">Reports</a>
+        <a href="global_architecture.html">Architecture</a>
+      </nav>
     </div>
-</body>
+  </header>
 
+  <main class="container">
+    <section class="hero">
+      <div class="kicker">Experiment Registry</div>
+      <h1>Active study pages and project narratives.</h1>
+      <p>This page groups experiment-specific documentation and entry points. It is intentionally concise so you can jump into the right page in one click.</p>
+    </section>
+
+    <section class="grid" aria-label="Experiment cards">
+      <article class="card span-6">
+        <h3>MindSentences</h3>
+        <p>MEG perception/production sentence processing. Main debug and optimization target.</p>
+        <a href="experiments/mindsentences.html">Open MindSentences</a>
+      </article>
+
+      <article class="card span-6">
+        <h3>Distraction</h3>
+        <p>Auditory comprehension under distraction manipulations and behavioral probes.</p>
+        <a href="experiments/distraction.html">Open Distraction</a>
+      </article>
+
+      <article class="card span-6">
+        <h3>Probe</h3>
+        <p>Syntactic probing across brain and language-model representations.</p>
+        <a href="experiments/probe.html">Open Probe</a>
+      </article>
+
+      <article class="card span-6">
+        <h3>ExpertLM</h3>
+        <p>Prompt/persona manipulations in language models and downstream neural alignment.</p>
+        <a href="experiments/expertlm.html">Open ExpertLM</a>
+      </article>
+    </section>
+
+    <section class="section">
+      <h2>Navigation Notes</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Need</th>
+            <th>Best page</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Daily status snapshot</td>
+            <td><a href="reports.html">reports.html</a></td>
+          </tr>
+          <tr>
+            <td>Pipeline architecture reference</td>
+            <td><a href="global_architecture.html">global_architecture.html</a></td>
+          </tr>
+          <tr>
+            <td>Legacy generated report pages</td>
+            <td><a href="report.html">report.html</a> and linked pages</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <footer class="container footer">
+    <p>Experiment registry refreshed for the redesign shell.</p>
+  </footer>
+</body>
 </html>
